@@ -1,0 +1,185 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <a href="/aportes" class="text-blue-600 hover:text-blue-800 text-sm font-medium mb-2 inline-block">
+      ← Volver a Aportes
+    </a>
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Aporte Monetario</h1>
+    <p class="text-gray-600">Autoriza un descuento voluntario de nómina para apoyar comunidades afectadas</p>
+  </div>
+
+  <!-- Información -->
+  <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-8">
+    <div class="flex">
+      <svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div>
+        <h3 class="text-lg font-semibold text-blue-900 mb-2">Sobre los aportes monetarios</h3>
+        <ul class="text-blue-800 text-sm space-y-1">
+          <li>• Los aportes son <strong>voluntarios</strong> y puedes modificarlos o cancelarlos en cualquier momento</li>
+          <li>• Recibirás un <strong>certificado</strong> de tu contribución para fines tributarios</li>
+          <li>• El 100% de tu aporte llega directamente a las comunidades afectadas</li>
+          <li>• Transparencia total: podrás hacer seguimiento del uso de tu contribución</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+    <form action="/aportes/monetario" method="POST">
+      <!-- Información Personal -->
+      <div class="mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Información Personal</h2>
+
+        <div class="mb-4">
+          <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">
+            Nombre Completo *
+          </label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Ej: María González Pérez"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="cargo" class="block text-sm font-medium text-gray-700 mb-2">
+            Cargo *
+          </label>
+          <input
+            type="text"
+            id="cargo"
+            name="cargo"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Ej: Defensora Regional"
+          />
+        </div>
+      </div>
+
+      <!-- Detalles del Aporte -->
+      <div class="mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Detalles del Aporte</h2>
+
+        <div class="mb-4">
+          <label for="monto" class="block text-sm font-medium text-gray-700 mb-2">
+            Monto del Aporte (COP) *
+          </label>
+          <div class="relative">
+            <span class="absolute left-4 top-2 text-gray-500">$</span>
+            <input
+              type="number"
+              id="monto"
+              name="monto"
+              min="1000"
+              step="1000"
+              required
+              class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="50000"
+            />
+          </div>
+          <p class="text-xs text-gray-500 mt-1">Monto mínimo: $1,000 COP</p>
+        </div>
+
+        <div class="mb-4">
+          <label for="periodicidad" class="block text-sm font-medium text-gray-700 mb-2">
+            Periodicidad del Aporte *
+          </label>
+          <select
+            id="periodicidad"
+            name="periodicidad"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Selecciona una opción</option>
+            <option value="mensual">Mensual</option>
+            <option value="quincenal">Quincenal</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="fechaInicio" class="block text-sm font-medium text-gray-700 mb-2">
+            Fecha de Inicio *
+          </label>
+          <input
+            type="date"
+            id="fechaInicio"
+            name="fechaInicio"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
+      <!-- Cálculo estimado -->
+      <div class="bg-gray-50 rounded-lg p-6 mb-6">
+        <h3 class="font-semibold text-gray-900 mb-3">Impacto estimado de tu aporte</h3>
+        <div class="text-sm text-gray-700 space-y-2" id="impacto">
+          <p>• Con tu aporte mensual de <span class="font-semibold">$50,000</span>, podrías:</p>
+          <p class="pl-4">- Proveer agua potable a <span class="text-blue-600 font-semibold">5 familias</span> por un mes</p>
+          <p class="pl-4">- O proveer alimentos básicos a <span class="text-blue-600 font-semibold">3 familias</span> por una semana</p>
+          <p class="pl-4">- O entregar <span class="text-blue-600 font-semibold">10 kits escolares</span> a niños afectados</p>
+        </div>
+      </div>
+
+      <!-- Términos -->
+      <div class="mb-6">
+        <label class="flex items-start">
+          <input type="checkbox" required class="mt-1 mr-3">
+          <span class="text-sm text-gray-700">
+            Autorizo expresamente el descuento de nómina según el monto y periodicidad seleccionados.
+            Entiendo que este aporte es voluntario y puedo modificarlo o cancelarlo en cualquier momento.
+          </span>
+        </label>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button
+          type="submit"
+          class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+        >
+          Registrar Aporte
+        </button>
+        <a
+          href="/aportes"
+          class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold text-center transition-colors duration-200"
+        >
+          Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Calcular impacto dinámicamente
+  document.getElementById('monto')?.addEventListener('input', function(e) {
+    const monto = parseInt(e.target.value) || 0;
+    const familias = Math.floor(monto / 10000);
+    const alimentos = Math.floor(monto / 15000);
+    const kits = Math.floor(monto / 5000);
+
+    if (monto >= 1000) {
+      document.getElementById('impacto').innerHTML = `
+        <p>• Con tu aporte mensual de <span class="font-semibold">${monto.toLocaleString('es-CO', {style: 'currency', currency: 'COP', minimumFractionDigits: 0})}</span>, podrías:</p>
+        <p class="pl-4">- Proveer agua potable a <span class="text-blue-600 font-semibold">${familias || 1}</span> ${familias === 1 ? 'familia' : 'familias'} por un mes</p>
+        <p class="pl-4">- O proveer alimentos básicos a <span class="text-blue-600 font-semibold">${alimentos || 1}</span> ${alimentos === 1 ? 'familia' : 'familias'} por una semana</p>
+        <p class="pl-4">- O entregar <span class="text-blue-600 font-semibold">${kits || 1}</span> kits escolares a niños afectados</p>
+      `;
+    }
+  });
+
+  // Establecer fecha mínima de hoy
+  const fechaInput = document.getElementById('fechaInicio');
+  if (fechaInput) {
+    const hoy = new Date().toISOString().split('T')[0];
+    fechaInput.setAttribute('min', hoy);
+    fechaInput.value = hoy;
+  }
+</script>

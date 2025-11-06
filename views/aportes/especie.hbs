@@ -1,0 +1,227 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <a href="/aportes" class="text-blue-600 hover:text-blue-800 text-sm font-medium mb-2 inline-block">
+      ← Volver a Aportes
+    </a>
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Aporte en Especie</h1>
+    <p class="text-gray-600">Dona bienes materiales para ayudar a comunidades afectadas</p>
+  </div>
+
+  <!-- Información -->
+  <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-lg mb-8">
+    <div class="flex">
+      <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div>
+        <h3 class="text-lg font-semibold text-green-900 mb-2">Tipos de aportes en especie que aceptamos</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-green-800 text-sm">
+          <div>
+            <p class="font-semibold mb-1">Alimentos:</p>
+            <ul class="space-y-1 pl-4">
+              <li>• Alimentos no perecederos</li>
+              <li>• Granos y cereales</li>
+              <li>• Enlatados</li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-semibold mb-1">Medicamentos:</p>
+            <ul class="space-y-1 pl-4">
+              <li>• Botiquines de primeros auxilios</li>
+              <li>• Medicamentos básicos</li>
+              <li>• Material médico</li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-semibold mb-1">Material Educativo:</p>
+            <ul class="space-y-1 pl-4">
+              <li>• Kits escolares</li>
+              <li>• Libros y cuadernos</li>
+              <li>• Material didáctico</li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-semibold mb-1">Otros:</p>
+            <ul class="space-y-1 pl-4">
+              <li>• Ropa y calzado</li>
+              <li>• Elementos de aseo</li>
+              <li>• Carpas y lonas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+    <form action="/aportes/especie" method="POST">
+      <!-- Información Personal -->
+      <div class="mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Información Personal</h2>
+
+        <div class="mb-4">
+          <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">
+            Nombre Completo *
+          </label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Ej: Pedro Sánchez"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="cargo" class="block text-sm font-medium text-gray-700 mb-2">
+            Cargo *
+          </label>
+          <input
+            type="text"
+            id="cargo"
+            name="cargo"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Ej: Asesor Jurídico"
+          />
+        </div>
+      </div>
+
+      <!-- Detalles del Aporte -->
+      <div class="mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Detalles del Aporte</h2>
+
+        <div class="mb-4">
+          <label for="tipoAyuda" class="block text-sm font-medium text-gray-700 mb-2">
+            Tipo de Ayuda *
+          </label>
+          <select
+            id="tipoAyuda"
+            name="tipoAyuda"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          >
+            <option value="">Selecciona el tipo de ayuda</option>
+            <option value="Alimentos">Alimentos</option>
+            <option value="Medicamentos">Medicamentos</option>
+            <option value="Material Educativo">Material Educativo</option>
+            <option value="Ropa y Calzado">Ropa y Calzado</option>
+            <option value="Elementos de Aseo">Elementos de Aseo</option>
+            <option value="Carpas y Lonas">Carpas y Lonas</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-2">
+            Descripción Detallada *
+          </label>
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            rows="4"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Describe el aporte en detalle, incluyendo cantidades, marcas, estado, etc."
+          ></textarea>
+          <p class="text-xs text-gray-500 mt-1">
+            Ejemplo: "50 kg de arroz marca X, 30 kg de frijoles, todo en buen estado y sin abrir"
+          </p>
+        </div>
+
+        <div class="mb-4">
+          <label for="fechaEntrega" class="block text-sm font-medium text-gray-700 mb-2">
+            Fecha de Entrega Estimada *
+          </label>
+          <input
+            type="date"
+            id="fechaEntrega"
+            name="fechaEntrega"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          />
+          <p class="text-xs text-gray-500 mt-1">Coordinaremos contigo el lugar y hora de recogida</p>
+        </div>
+
+        <div class="mb-4">
+          <label for="destino" class="block text-sm font-medium text-gray-700 mb-2">
+            Destino Preferido (Opcional)
+          </label>
+          <input
+            type="text"
+            id="destino"
+            name="destino"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            placeholder="Ej: Chocó - Comunidad El Progreso"
+          />
+          <p class="text-xs text-gray-500 mt-1">
+            Si tienes preferencia por una región o comunidad específica, indícala aquí
+          </p>
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="bg-gray-50 rounded-lg p-6 mb-6">
+        <h3 class="font-semibold text-gray-900 mb-3">Proceso de entrega</h3>
+        <ol class="text-sm text-gray-700 space-y-2">
+          <li class="flex items-start">
+            <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3 flex-shrink-0 mt-0.5">1</span>
+            <span>Recibirás una confirmación de tu registro vía correo electrónico</span>
+          </li>
+          <li class="flex items-start">
+            <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3 flex-shrink-0 mt-0.5">2</span>
+            <span>Un coordinador te contactará para coordinar la recogida del aporte</span>
+          </li>
+          <li class="flex items-start">
+            <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3 flex-shrink-0 mt-0.5">3</span>
+            <span>Se verificará el estado de los bienes donados</span>
+          </li>
+          <li class="flex items-start">
+            <span class="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs mr-3 flex-shrink-0 mt-0.5">4</span>
+            <span>Recibirás un certificado de donación y podrás hacer seguimiento de la entrega</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Términos -->
+      <div class="mb-6">
+        <label class="flex items-start">
+          <input type="checkbox" required class="mt-1 mr-3">
+          <span class="text-sm text-gray-700">
+            Declaro que los bienes a donar están en buen estado y son aptos para su uso.
+            Autorizo a LA NATURALEZA a distribuir estos bienes según las necesidades de las comunidades.
+          </span>
+        </label>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button
+          type="submit"
+          class="flex-1 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+        >
+          Registrar Aporte
+        </button>
+        <a
+          href="/aportes"
+          class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold text-center transition-colors duration-200"
+        >
+          Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Establecer fecha mínima de hoy
+  const fechaInput = document.getElementById('fechaEntrega');
+  if (fechaInput) {
+    const hoy = new Date().toISOString().split('T')[0];
+    fechaInput.setAttribute('min', hoy);
+    fechaInput.value = hoy;
+  }
+</script>

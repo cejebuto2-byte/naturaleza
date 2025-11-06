@@ -1,0 +1,185 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Aportes Solidarios</h1>
+    <p class="text-gray-600">Gestión de contribuciones y transparencia</p>
+  </div>
+
+  <!-- Mensaje de éxito -->
+  {{#if success}}
+    {{#if (eq success 'monetario')}}
+      {{> alert type="success" title="¡Aporte registrado!" message="Tu aporte monetario ha sido registrado exitosamente."}}
+    {{else if (eq success 'especie')}}
+      {{> alert type="success" title="¡Aporte registrado!" message="Tu aporte en especie ha sido registrado exitosamente."}}
+    {{else if (eq success 'voluntariado')}}
+      {{> alert type="success" title="¡Voluntariado registrado!" message="Tu tiempo de voluntariado ha sido registrado exitosamente."}}
+    {{/if}}
+  {{/if}}
+
+  <!-- Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-semibold opacity-90">Total Aportes</h3>
+        <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <p class="text-3xl font-bold">{{estadisticas.totalAportes}}</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg shadow-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-semibold opacity-90">Monto Mensual</h3>
+        <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <p class="text-3xl font-bold">{{formatCurrency estadisticas.montoMensualTotal}}</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-semibold opacity-90">Aportes Activos</h3>
+        <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      <p class="text-3xl font-bold">{{estadisticas.aportesActivos}}</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-lg shadow-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-semibold opacity-90">Voluntarios</h3>
+        <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+      </div>
+      <p class="text-3xl font-bold">{{estadisticas.voluntarios}}</p>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="flex flex-wrap gap-4 mb-8">
+    <a href="/aportes/monetario" class="flex-1 md:flex-none bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      </svg>
+      <span>Aporte Monetario</span>
+    </a>
+    <a href="/aportes/especie" class="flex-1 md:flex-none bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      </svg>
+      <span>Aporte en Especie</span>
+    </a>
+    <a href="/aportes/voluntariado" class="flex-1 md:flex-none bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      </svg>
+      <span>Ofrecer Voluntariado</span>
+    </a>
+  </div>
+
+  <!-- Filtros -->
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Filtrar Aportes</h2>
+    <div class="flex flex-wrap gap-2">
+      <a href="/aportes" class="px-4 py-2 rounded-lg font-medium transition-colors {{#if (eq filtroTipo 'todos')}}bg-blue-600 text-white{{else}}bg-gray-200 text-gray-700 hover:bg-gray-300{{/if}}">
+        Todos
+      </a>
+      <a href="/aportes?tipo=monetario" class="px-4 py-2 rounded-lg font-medium transition-colors {{#if (eq filtroTipo 'monetario')}}bg-blue-600 text-white{{else}}bg-gray-200 text-gray-700 hover:bg-gray-300{{/if}}">
+        Monetarios
+      </a>
+      <a href="/aportes?tipo=especie" class="px-4 py-2 rounded-lg font-medium transition-colors {{#if (eq filtroTipo 'especie')}}bg-green-600 text-white{{else}}bg-gray-200 text-gray-700 hover:bg-gray-300{{/if}}">
+        En Especie
+      </a>
+      <a href="/aportes?tipo=voluntariado" class="px-4 py-2 rounded-lg font-medium transition-colors {{#if (eq filtroTipo 'voluntariado')}}bg-orange-600 text-white{{else}}bg-gray-200 text-gray-700 hover:bg-gray-300{{/if}}">
+        Voluntariado
+      </a>
+    </div>
+  </div>
+
+  <!-- Listado de aportes -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-xl font-bold text-gray-900">Listado de Aportes</h2>
+      <p class="text-sm text-gray-600 mt-1">{{aportes.length}} aportes registrados</p>
+    </div>
+
+    {{#if aportes}}
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contribuyente</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          {{#each aportes}}
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">{{this.nombre}}</div>
+              <div class="text-sm text-gray-500">{{this.cargo}}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {{#if (eq this.tipoAporte 'monetario')}}
+                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                  Monetario
+                </span>
+              {{else if (eq this.tipoAporte 'especie')}}
+                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  En Especie
+                </span>
+              {{else if (eq this.tipoAporte 'voluntariado')}}
+                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
+                  Voluntariado
+                </span>
+              {{/if}}
+            </td>
+            <td class="px-6 py-4">
+              {{#if (eq this.tipoAporte 'monetario')}}
+                <div class="text-sm text-gray-900">{{formatCurrency this.monto}}</div>
+                <div class="text-sm text-gray-500">{{this.periodicidad}}</div>
+              {{else if (eq this.tipoAporte 'especie')}}
+                <div class="text-sm text-gray-900">{{this.tipoAyuda}}</div>
+                <div class="text-sm text-gray-500">{{this.destino}}</div>
+              {{else if (eq this.tipoAporte 'voluntariado')}}
+                <div class="text-sm text-gray-900">{{this.horas}} horas</div>
+                <div class="text-sm text-gray-500">{{this.lugar}}</div>
+              {{/if}}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{#if (eq this.tipoAporte 'monetario')}}
+                {{formatDateShort this.fechaInicio}}
+              {{else if (eq this.tipoAporte 'especie')}}
+                {{formatDateShort this.fechaEntrega}}
+              {{else if (eq this.tipoAporte 'voluntariado')}}
+                {{formatDateShort this.fecha}}
+              {{/if}}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <a href="/aportes/certificado/{{this.id}}" target="_blank" class="text-blue-600 hover:text-blue-900">
+                Ver Certificado
+              </a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    {{else}}
+    <div class="px-6 py-12 text-center">
+      <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+      </svg>
+      <p class="text-gray-500 text-lg">No hay aportes registrados</p>
+      <p class="text-gray-400 text-sm mt-2">Comienza registrando tu primer aporte</p>
+    </div>
+    {{/if}}
+  </div>
+</div>
