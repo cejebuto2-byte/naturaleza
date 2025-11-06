@@ -56,12 +56,13 @@ export interface Suscripcion {
   id: number;
   nombre: string;
   email: string;
-  telefono: string;
-  regiones: string[];
+  telefono?: string;
+  departamento: string;
+  municipio: string;
   tiposAlerta: string[];
-  canales: string[];
-  activa: boolean;
+  nivelesInteres: string[];
   fechaSuscripcion: string;
+  activa: boolean;
 }
 
 export const alertasData: Alerta[] = [

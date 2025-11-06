@@ -1,0 +1,310 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+      <div>
+        <h1 class="text-4xl font-bold text-gray-800 mb-2 flex items-center">
+          <svg class="w-10 h-10 mr-3 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          NATURALEZA ALERTA
+        </h1>
+        <p class="text-gray-600">Sistema de Alertas Tempranas y Gestión de Emergencias</p>
+      </div>
+      <a href="/alertas/suscripcion" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">
+        📧 Suscribirse a Alertas
+      </a>
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-lg shadow-lg p-6 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-red-100 text-sm font-medium mb-1">Alertas Activas</p>
+          <p class="text-4xl font-bold">{{estadisticas.totalAlertas}}</p>
+        </div>
+        <div class="bg-white bg-opacity-20 rounded-full p-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-green-100 text-sm font-medium mb-1">Albergues Disponibles</p>
+          <p class="text-4xl font-bold">{{estadisticas.alberguesDisponibles}}</p>
+        </div>
+        <div class="bg-white bg-opacity-20 rounded-full p-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-blue-100 text-sm font-medium mb-1">Capacidad Total</p>
+          <p class="text-4xl font-bold">{{formatNumber estadisticas.capacidadAlbergues.total}}</p>
+        </div>
+        <div class="bg-white bg-opacity-20 rounded-full p-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-purple-100 text-sm font-medium mb-1">Rutas de Evacuación</p>
+          <p class="text-4xl font-bold">{{estadisticas.totalRutasEvacuacion}}</p>
+        </div>
+        <div class="bg-white bg-opacity-20 rounded-full p-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Niveles de Severidad -->
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Alertas por Nivel de Severidad</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-red-50 border-2 border-red-500 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-red-800">🔴 Nivel Rojo</span>
+          <span class="text-2xl font-bold text-red-600">{{estadisticas.alertasPorSeveridad.rojo}}</span>
+        </div>
+        <p class="text-xs text-red-700">Peligro inminente</p>
+      </div>
+
+      <div class="bg-orange-50 border-2 border-orange-500 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-orange-800">🟠 Nivel Naranja</span>
+          <span class="text-2xl font-bold text-orange-600">{{estadisticas.alertasPorSeveridad.naranja}}</span>
+        </div>
+        <p class="text-xs text-orange-700">Alto riesgo</p>
+      </div>
+
+      <div class="bg-yellow-50 border-2 border-yellow-500 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-yellow-800">🟡 Nivel Amarillo</span>
+          <span class="text-2xl font-bold text-yellow-600">{{estadisticas.alertasPorSeveridad.amarillo}}</span>
+        </div>
+        <p class="text-xs text-yellow-700">Riesgo moderado</p>
+      </div>
+
+      <div class="bg-green-50 border-2 border-green-500 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-green-800">🟢 Nivel Verde</span>
+          <span class="text-2xl font-bold text-green-600">{{estadisticas.alertasPorSeveridad.verde}}</span>
+        </div>
+        <p class="text-xs text-green-700">Bajo riesgo</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">🔍 Filtrar Alertas</h3>
+    <form action="/alertas" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Severidad</label>
+        <select name="severidad" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+          <option value="">Todas</option>
+          {{#each nivelesSeveridad}}
+          <option value="{{this}}" {{#if (eq this ../filtros.severidad)}}selected{{/if}}>
+            {{#if (eq this 'rojo')}}🔴 Roja{{/if}}
+            {{#if (eq this 'naranja')}}🟠 Naranja{{/if}}
+            {{#if (eq this 'amarillo')}}🟡 Amarilla{{/if}}
+            {{#if (eq this 'verde')}}🟢 Verde{{/if}}
+          </option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label>
+        <select name="tipo" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+          <option value="">Todos</option>
+          {{#each tiposAlerta}}
+          <option value="{{this}}" {{#if (eq this ../filtros.tipo)}}selected{{/if}}>
+            {{#if (eq this 'meteorologica')}}☁️ Meteorológica{{/if}}
+            {{#if (eq this 'sismica')}}🌋 Sísmica{{/if}}
+            {{#if (eq this 'inundacion')}}🌊 Inundación{{/if}}
+            {{#if (eq this 'deslizamiento')}}⛰️ Deslizamiento{{/if}}
+            {{#if (eq this 'incendio')}}🔥 Incendio{{/if}}
+            {{#if (eq this 'sequia')}}🏜️ Sequía{{/if}}
+          </option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Región</label>
+        <select name="region" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+          <option value="">Todas</option>
+          {{#each regiones}}
+          <option value="{{this}}" {{#if (eq this ../filtros.region)}}selected{{/if}}>{{this}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+        <select name="estado" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+          <option value="">Todas</option>
+          <option value="activa" {{#if (eq filtros.estado 'activa')}}selected{{/if}}>✅ Activa</option>
+          <option value="expirada" {{#if (eq filtros.estado 'expirada')}}selected{{/if}}>❌ Expirada</option>
+        </select>
+      </div>
+
+      <div class="md:col-span-4 flex gap-2">
+        <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">
+          Aplicar Filtros
+        </button>
+        <a href="/alertas" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium">
+          Limpiar
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Grid de Alertas -->
+  {{#if alertas.length}}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    {{#each alertas}}
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden border-t-4
+      {{#if (eq this.nivelSeveridad 'rojo')}}border-red-600{{/if}}
+      {{#if (eq this.nivelSeveridad 'naranja')}}border-orange-500{{/if}}
+      {{#if (eq this.nivelSeveridad 'amarillo')}}border-yellow-400{{/if}}
+      {{#if (eq this.nivelSeveridad 'verde')}}border-green-500{{/if}}
+    ">
+      <div class="p-6">
+        <!-- Header con badge de severidad -->
+        <div class="flex justify-between items-start mb-4">
+          <span class="px-3 py-1 rounded-full text-xs font-bold text-white
+            {{#if (eq this.nivelSeveridad 'rojo')}}bg-red-600{{/if}}
+            {{#if (eq this.nivelSeveridad 'naranja')}}bg-orange-500{{/if}}
+            {{#if (eq this.nivelSeveridad 'amarillo')}}bg-yellow-500{{/if}}
+            {{#if (eq this.nivelSeveridad 'verde')}}bg-green-500{{/if}}
+          ">
+            {{#if (eq this.nivelSeveridad 'rojo')}}🔴 ALERTA ROJA{{/if}}
+            {{#if (eq this.nivelSeveridad 'naranja')}}🟠 ALERTA NARANJA{{/if}}
+            {{#if (eq this.nivelSeveridad 'amarillo')}}🟡 ALERTA AMARILLA{{/if}}
+            {{#if (eq this.nivelSeveridad 'verde')}}🟢 ALERTA VERDE{{/if}}
+          </span>
+
+          <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-medium">
+            {{#if (eq this.tipo 'meteorologica')}}☁️ Meteorológica{{/if}}
+            {{#if (eq this.tipo 'sismica')}}🌋 Sísmica{{/if}}
+            {{#if (eq this.tipo 'inundacion')}}🌊 Inundación{{/if}}
+            {{#if (eq this.tipo 'deslizamiento')}}⛰️ Deslizamiento{{/if}}
+            {{#if (eq this.tipo 'incendio')}}🔥 Incendio{{/if}}
+            {{#if (eq this.tipo 'sequia')}}🏜️ Sequía{{/if}}
+          </span>
+        </div>
+
+        <!-- Título -->
+        <h3 class="text-xl font-bold text-gray-800 mb-3">{{this.titulo}}</h3>
+
+        <!-- Descripción -->
+        <p class="text-gray-600 mb-4 line-clamp-3">{{this.descripcion}}</p>
+
+        <!-- Regiones afectadas -->
+        <div class="mb-4">
+          <p class="text-sm font-semibold text-gray-700 mb-1">📍 Regiones Afectadas:</p>
+          <div class="flex flex-wrap gap-1">
+            {{#each this.regiones}}
+            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">{{this}}</span>
+            {{/each}}
+          </div>
+        </div>
+
+        <!-- Fecha -->
+        <div class="border-t pt-3">
+          <p class="text-xs text-gray-500">
+            <strong>Emitida:</strong> {{formatDateShort this.fechaEmision}}
+          </p>
+          <p class="text-xs text-gray-500">
+            <strong>Expira:</strong> {{formatDateShort this.fechaExpiracion}}
+          </p>
+        </div>
+
+        <!-- Recomendaciones preview -->
+        {{#if this.recomendaciones.length}}
+        <div class="mt-4 bg-gray-50 rounded-lg p-3">
+          <p class="text-sm font-semibold text-gray-700 mb-2">⚠️ Recomendaciones:</p>
+          <ul class="text-xs text-gray-600 space-y-1">
+            {{#each this.recomendaciones}}
+              {{#if @first}}
+              <li>• {{this}}</li>
+              {{/if}}
+            {{/each}}
+            {{#if (gte this.recomendaciones.length 2)}}
+            <li class="text-blue-600 font-medium">+ {{math this.recomendaciones.length '-' 1}} más...</li>
+            {{/if}}
+          </ul>
+        </div>
+        {{/if}}
+
+        <!-- Fuente -->
+        <p class="text-xs text-gray-400 mt-4 italic">Fuente: {{this.fuente}}</p>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{else}}
+  <div class="bg-white rounded-lg shadow-md p-12 text-center">
+    <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <h3 class="text-xl font-semibold text-gray-700 mb-2">No hay alertas con esos filtros</h3>
+    <p class="text-gray-500 mb-4">Intenta ajustar los filtros para ver más resultados</p>
+    <a href="/alertas" class="text-blue-600 hover:text-blue-700 font-medium">Ver todas las alertas</a>
+  </div>
+  {{/if}}
+
+  <!-- Enlaces rápidos -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+    <a href="/alertas/albergues" class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white hover:shadow-xl transition transform hover:scale-105">
+      <div class="flex items-center mb-3">
+        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        </svg>
+        <h3 class="text-2xl font-bold">Albergues</h3>
+      </div>
+      <p class="text-green-100">Encuentra albergues cercanos y rutas de evacuación seguras</p>
+    </a>
+
+    <a href="/alertas/autocuidado" class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white hover:shadow-xl transition transform hover:scale-105">
+      <div class="flex items-center mb-3">
+        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+        </svg>
+        <h3 class="text-2xl font-bold">Autocuidado</h3>
+      </div>
+      <p class="text-purple-100">Aprende medidas de protección y prevención para emergencias</p>
+    </a>
+
+    <a href="/alertas/suscripcion" class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white hover:shadow-xl transition transform hover:scale-105">
+      <div class="flex items-center mb-3">
+        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+        </svg>
+        <h3 class="text-2xl font-bold">Suscribirse</h3>
+      </div>
+      <p class="text-blue-100">Recibe alertas personalizadas según tu ubicación e intereses</p>
+    </a>
+  </div>
+</div>
