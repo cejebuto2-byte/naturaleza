@@ -7,7 +7,7 @@ import { GeorreferenciaModule } from './modules/georreferenciacion/georref.modul
 import { SeguimientoModule } from './modules/seguimiento/seguimiento.module';
 import { KidsModule } from './modules/kids/kids.module';
 import { ComunicacionModule } from './modules/comunicacion/comunicacion.module';
-import { AlertasModule } from './modules/alertas/alertas.module';
+import { AlertasModule } from './modules/alertas/alertas.module'; // Módulo de alertas y emergencias
 
 @Module({
   imports: [
