@@ -81,3 +81,9 @@ jspm_packages/
 .tmp
 temp/
 tmp/
+
+# Claude Code
+.claude/
+
+# Misc
+nul

@@ -11,8 +11,24 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
-  // Registrar helpers de Handlebars
-  hbs.registerHelper('eq', (a, b) => a === b);
+  // Configurar partials y layouts
+  hbs.registerPartials(join(__dirname, '..', 'views', 'partials'));
+
+  // Configurar el motor express-handlebars con layout predeterminado
+  const express = require('express');
+  const exphbs = require('express-handlebars');
+
+  const hbsEngine = exphbs.create({
+    extname: '.hbs',
+    defaultLayout: 'main',
+    layoutsDir: join(__dirname, '..', 'views', 'layouts'),
+    partialsDir: join(__dirname, '..', 'views', 'partials'),
+    helpers: {
+      eq: (a, b) => a === b
+    }
+  });
+
+  app.engine('hbs', hbsEngine.engine);
 
   // Servir archivos estáticos
   app.useStaticAssets(join(__dirname, '..', 'public'));
