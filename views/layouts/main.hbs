@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{title}} - Defensoría Demo</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>{{title}} - LA NATURALEZA</title>
+  <link rel="stylesheet" href="/styles.css">
   <style>
     @keyframes float {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -28,7 +28,13 @@
     }
   </style>
 </head>
-<body class="bg-gray-50 overflow-x-hidden">
-  {{{body}}}
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    {{> navbar active=active}}
+
+    <main class="flex-grow">
+        {{{body}}}
+    </main>
+
+    {{> footer}}
 </body>
 </html>

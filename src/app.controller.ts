@@ -8,12 +8,6 @@ export class AppController {
   @Get()
   @Render('landing')
   getLanding() {
-    return { title: 'Inicio' };
-  }
-
-  @Get('dashboard')
-  @Render('dashboard')
-  getDashboard() {
-    return this.appService.getDashboardData();
+    return { title: 'Inicio', active: 'landing' };
   }
 }
