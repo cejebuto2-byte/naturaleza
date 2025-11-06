@@ -1,211 +1,489 @@
-<div class="container mx-auto px-4 py-8">
-  <!-- Header -->
-  <div class="mb-8">
-    <h1 class="text-4xl font-bold text-gray-900 mb-2">Panel de Control</h1>
-    <p class="text-gray-600">Indicadores estratégicos en tiempo real</p>
-  </div>
+<!-- Fondo con partículas animadas -->
+<div class="fixed inset-0 -z-10 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"></div>
+  <div id="particles-container" class="absolute inset-0"></div>
+</div>
 
-  <!-- Indicadores principales -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <!-- Total Aportes -->
-    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <div class="p-3 rounded-full bg-blue-100">
-          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-        </div>
-      </div>
-      <div>
-        <p class="text-gray-600 text-sm mb-1">Aportes Totales</p>
-        <p class="text-3xl font-bold text-gray-900">{{formatCurrency indicadores.aportesTotales.monto}}</p>
-        <p class="text-sm text-green-600 mt-1">{{indicadores.aportesTotales.crecimiento}}</p>
-        <p class="text-xs text-gray-500 mt-1">{{indicadores.aportesTotales.cantidad}} contribuciones</p>
+<!-- Hero Section del Dashboard -->
+<div class="relative overflow-hidden">
+  <!-- Formas decorativas con parallax -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-float" data-speed="0.5"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-pink-400/20 to-orange-400/20 rounded-full blur-3xl animate-float" style="animation-delay: 2s;" data-speed="0.3"></div>
+
+  <div class="container mx-auto px-4 py-12">
+    <!-- Header animado -->
+    <div class="mb-12 text-center" data-aos="fade-down" data-aos-duration="1000">
+      <h1 class="text-5xl md:text-6xl font-black mb-4">
+        <span class="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient">
+          Panel de Control
+        </span>
+      </h1>
+      <p class="text-xl text-gray-600">Indicadores estratégicos en tiempo real</p>
+      <div class="mt-4 flex justify-center gap-2">
+        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+        <span class="text-sm text-gray-500">Sistema activo</span>
       </div>
     </div>
 
-    <!-- Personas Beneficiadas -->
-    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <div class="p-3 rounded-full bg-green-100">
-          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-          </svg>
-        </div>
-      </div>
-      <div>
-        <p class="text-gray-600 text-sm mb-1">Personas Beneficiadas</p>
-        <p class="text-3xl font-bold text-gray-900">{{formatNumber indicadores.personasBeneficiadas.total}}</p>
-        <p class="text-xs text-gray-500 mt-1">
-          {{formatNumber indicadores.personasBeneficiadas.ninos}} niños,
-          {{formatNumber indicadores.personasBeneficiadas.adultos}} adultos
-        </p>
-      </div>
-    </div>
+    <!-- Indicadores principales con animación -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
 
-    <!-- Zonas Intervenidas -->
-    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <div class="p-3 rounded-full bg-purple-100">
-          <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
-        </div>
-      </div>
-      <div>
-        <p class="text-gray-600 text-sm mb-1">Zonas Intervenidas</p>
-        <p class="text-3xl font-bold text-gray-900">{{indicadores.zonasIntervenidas.total}}</p>
-        <p class="text-xs text-gray-500 mt-1">En 5 departamentos</p>
-      </div>
-    </div>
-
-    <!-- Voluntarios -->
-    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <div class="p-3 rounded-full bg-orange-100">
-          <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-          </svg>
-        </div>
-      </div>
-      <div>
-        <p class="text-gray-600 text-sm mb-1">Voluntarios Activos</p>
-        <p class="text-3xl font-bold text-gray-900">{{indicadores.voluntarios.total}}</p>
-        <p class="text-xs text-gray-500 mt-1">{{formatNumber indicadores.voluntarios.horasDonadas}} horas donadas</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Alertas Activas -->
-  {{#if alertasActivas}}
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">Alertas Activas</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {{#each alertasActivas}}
-      <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-{{#if (eq nivel 'Rojo')}}red-500{{else if (eq nivel 'Naranja')}}orange-500{{else}}yellow-500{{/if}}">
-        <div class="flex items-center justify-between mb-3">
-          <span class="px-3 py-1 rounded-full text-sm font-semibold {{badgeAlerta nivel}}">
-            {{nivel}}
-          </span>
-          <span class="text-xs text-gray-500">{{tipo}}</span>
-        </div>
-        <h3 class="font-semibold text-gray-900 mb-2">{{region}}</h3>
-        <p class="text-sm text-gray-600 mb-3">{{descripcion}}</p>
-        <p class="text-xs text-gray-500">Vigente hasta: {{formatDateShort vigenciaHasta}}</p>
-      </div>
-      {{/each}}
-    </div>
-  </div>
-  {{/if}}
-
-  <!-- Distribución de Ayuda -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-    <!-- Tipos de Ayuda -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <h2 class="text-xl font-bold text-gray-900 mb-4">Distribución por Tipo de Ayuda</h2>
-      <div class="space-y-4">
-        {{#each (json indicadores.tiposAyuda)}}
-        <div>
-          <div class="flex justify-between text-sm mb-1">
-            <span class="text-gray-700">{{@key}}</span>
-            <span class="font-semibold">{{this}}</span>
+      <!-- Card 1: Aportes -->
+      <div class="group relative" data-aos="fade-up" data-aos-delay="100">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+        <div class="relative bg-white rounded-3xl shadow-xl p-6 transform hover:scale-105 hover:-rotate-1 transition-all duration-500">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 shadow-lg transform group-hover:rotate-12 transition-transform duration-500">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="text-2xl">💰</div>
           </div>
-          <div class="w-full bg-gray-200 rounded-full h-2">
-            <div class="bg-blue-600 h-2 rounded-full" style="width: {{this}}%"></div>
+          <p class="text-gray-600 text-sm mb-2 font-medium">Aportes Totales</p>
+          <p class="text-4xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2">
+            <span class="counter" data-target="{{indicadores.aportesTotales.monto}}">0</span>
+          </p>
+          <div class="flex items-center gap-2 text-sm">
+            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full font-semibold">{{indicadores.aportesTotales.crecimiento}}</span>
+          </div>
+          <p class="text-xs text-gray-500 mt-2">{{indicadores.aportesTotales.cantidad}} contribuciones</p>
+        </div>
+      </div>
+
+      <!-- Card 2: Personas -->
+      <div class="group relative" data-aos="fade-up" data-aos-delay="200">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-600 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+        <div class="relative bg-white rounded-3xl shadow-xl p-6 transform hover:scale-105 hover:rotate-1 transition-all duration-500">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-600 shadow-lg transform group-hover:rotate-12 transition-transform duration-500">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </div>
+            <div class="text-2xl">👥</div>
+          </div>
+          <p class="text-gray-600 text-sm mb-2 font-medium">Personas Beneficiadas</p>
+          <p class="text-4xl font-black bg-gradient-to-r from-green-600 to-emerald-800 bg-clip-text text-transparent mb-2">
+            <span class="counter" data-target="{{indicadores.personasBeneficiadas.total}}">0</span>
+          </p>
+          <p class="text-xs text-gray-500">
+            <span class="counter-small" data-target="{{indicadores.personasBeneficiadas.ninos}}">0</span> niños,
+            <span class="counter-small" data-target="{{indicadores.personasBeneficiadas.adultos}}">0</span> adultos
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 3: Zonas -->
+      <div class="group relative" data-aos="fade-up" data-aos-delay="300">
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-600 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+        <div class="relative bg-white rounded-3xl shadow-xl p-6 transform hover:scale-105 hover:-rotate-1 transition-all duration-500">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-600 shadow-lg transform group-hover:rotate-12 transition-transform duration-500">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+            </div>
+            <div class="text-2xl">📍</div>
+          </div>
+          <p class="text-gray-600 text-sm mb-2 font-medium">Zonas Intervenidas</p>
+          <p class="text-4xl font-black bg-gradient-to-r from-purple-600 to-pink-800 bg-clip-text text-transparent mb-2">
+            <span class="counter" data-target="{{indicadores.zonasIntervenidas.total}}">0</span>
+          </p>
+          <p class="text-xs text-gray-500">En 5 departamentos</p>
+        </div>
+      </div>
+
+      <!-- Card 4: Voluntarios -->
+      <div class="group relative" data-aos="fade-up" data-aos-delay="400">
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-600 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+        <div class="relative bg-white rounded-3xl shadow-xl p-6 transform hover:scale-105 hover:rotate-1 transition-all duration-500">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-orange-400 to-red-600 shadow-lg transform group-hover:rotate-12 transition-transform duration-500">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </div>
+            <div class="text-2xl">❤️</div>
+          </div>
+          <p class="text-gray-600 text-sm mb-2 font-medium">Voluntarios Activos</p>
+          <p class="text-4xl font-black bg-gradient-to-r from-orange-600 to-red-800 bg-clip-text text-transparent mb-2">
+            <span class="counter" data-target="{{indicadores.voluntarios.total}}">0</span>
+          </p>
+          <p class="text-xs text-gray-500">
+            <span class="counter-small" data-target="{{indicadores.voluntarios.horasDonadas}}">0</span> horas donadas
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos con parallax -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+
+      <!-- Distribución de Ayuda -->
+      <div class="relative" data-aos="fade-right" data-aos-duration="1000">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-200/50 to-purple-200/50 rounded-3xl blur-xl"></div>
+        <div class="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/50">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Distribución de Ayuda
+            </h2>
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center shadow-lg">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="space-y-4">
+            {{#each (json indicadores.tiposAyuda)}}
+            <div class="group">
+              <div class="flex justify-between text-sm mb-2">
+                <span class="text-gray-700 font-medium">{{@key}}</span>
+                <span class="font-bold text-gray-900">{{this}}</span>
+              </div>
+              <div class="relative w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                <div class="bar-animate absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-3 rounded-full transform origin-left scale-x-0 group-hover:shadow-lg transition-shadow" style="width: {{this}}%"></div>
+              </div>
+            </div>
+            {{/each}}
           </div>
         </div>
-        {{/each}}
       </div>
-    </div>
 
-    <!-- Zonas por Departamento -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <h2 class="text-xl font-bold text-gray-900 mb-4">Intervenciones por Departamento</h2>
-      <div class="space-y-4">
-        {{#each (json indicadores.zonasIntervenidas.porDepartamento)}}
-        <div class="flex justify-between items-center">
-          <span class="text-gray-700">{{@key}}</span>
-          <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-semibold">
-            {{this}} zonas
-          </span>
+      <!-- Departamentos -->
+      <div class="relative" data-aos="fade-left" data-aos-duration="1000">
+        <div class="absolute inset-0 bg-gradient-to-br from-green-200/50 to-emerald-200/50 rounded-3xl blur-xl"></div>
+        <div class="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/50">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+              Por Departamento
+            </h2>
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="space-y-4">
+            {{#each (json indicadores.zonasIntervenidas.porDepartamento)}}
+            <div class="flex justify-between items-center p-3 rounded-2xl hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300 group">
+              <span class="text-gray-700 font-medium group-hover:text-green-700 transition-colors">{{@key}}</span>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-xl text-sm font-bold shadow-lg group-hover:scale-110 transition-transform">
+                  {{this}} zonas
+                </span>
+              </div>
+            </div>
+            {{/each}}
+          </div>
         </div>
-        {{/each}}
       </div>
     </div>
-  </div>
 
-  <!-- Zonas Recientes -->
-  <div class="bg-white rounded-lg shadow-md p-6">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-bold text-gray-900">Zonas Afectadas Recientes</h2>
-      <a href="/mapa" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">
-        Ver todas →
+    <!-- Tabla de Zonas con efecto de aparición -->
+    <div class="relative mb-12" data-aos="fade-up" data-aos-duration="1000">
+      <div class="absolute inset-0 bg-gradient-to-br from-indigo-200/50 to-purple-200/50 rounded-3xl blur-xl"></div>
+      <div class="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/50">
+        <div class="p-8 pb-6">
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h2 class="text-3xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                Zonas Afectadas Recientes
+              </h2>
+              <p class="text-gray-600">Situaciones que requieren atención inmediata</p>
+            </div>
+            <a href="/mapa" class="group px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-2xl font-bold hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+              Ver Mapa
+              <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead>
+              <tr class="bg-gradient-to-r from-indigo-50 to-purple-50">
+                <th class="px-6 py-4 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider">Zona</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider">Emergencia</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider">Prioridad</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider">Afectados</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider">Fecha</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              {{#each zonasRecientes}}
+              <tr class="hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 transition-all duration-300 table-row-animate">
+                <td class="px-6 py-4">
+                  <div class="text-sm font-bold text-gray-900">{{nombre}}</div>
+                  <div class="text-sm text-gray-600">{{municipio}}, {{departamento}}</div>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-lg text-sm font-semibold">
+                    {{tipoEmergencia}}
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full {{badgePrioridad nivelPrioridad}} shadow-lg">
+                    {{nivelPrioridad}}
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                    <span class="text-sm font-bold text-gray-900">{{formatNumber poblacionAfectada}} personas</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">
+                  {{formatDateShort fechaReporte}}
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones Rápidas con efecto 3D -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-aos="zoom-in" data-aos-duration="1000">
+
+      <a href="/aportes" class="group relative perspective-1000">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
+        <div class="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-8 text-white text-center transform group-hover:scale-105 group-hover:rotate-y-5 transition-all duration-500 shadow-2xl">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-black mb-3">Hacer un Aporte</h3>
+          <p class="text-blue-100 mb-4">Contribuye con la causa solidaria y transforma vidas</p>
+          <div class="flex items-center justify-center gap-2 text-sm font-semibold">
+            <span>Comenzar</span>
+            <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <a href="/comunicacion" class="group relative perspective-1000">
+        <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-600 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
+        <div class="relative bg-gradient-to-br from-green-500 to-emerald-700 rounded-3xl p-8 text-white text-center transform group-hover:scale-105 group-hover:rotate-y-5 transition-all duration-500 shadow-2xl">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-black mb-3">Reportar Necesidad</h3>
+          <p class="text-green-100 mb-4">Comunica una situación de emergencia</p>
+          <div class="flex items-center justify-center gap-2 text-sm font-semibold">
+            <span>Reportar</span>
+            <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <a href="/mapa" class="group relative perspective-1000">
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-600 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
+        <div class="relative bg-gradient-to-br from-purple-500 to-pink-700 rounded-3xl p-8 text-white text-center transform group-hover:scale-105 group-hover:rotate-y-5 transition-all duration-500 shadow-2xl">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-black mb-3">Ver Mapa</h3>
+          <p class="text-purple-100 mb-4">Explora las zonas afectadas en tiempo real</p>
+          <div class="flex items-center justify-center gap-2 text-sm font-semibold">
+            <span>Explorar</span>
+            <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </div>
+        </div>
       </a>
     </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Zona</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Emergencia</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioridad</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Afectados</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          {{#each zonasRecientes}}
-          <tr class="hover:bg-gray-50">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">{{nombre}}</div>
-              <div class="text-sm text-gray-500">{{municipio}}, {{departamento}}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{tipoEmergencia}}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{badgePrioridad nivelPrioridad}}">
-                {{nivelPrioridad}}
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{formatNumber poblacionAfectada}} personas
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              {{formatDateShort fechaReporte}}
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Acciones rápidas -->
-  <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-    <a href="/aportes" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-6 text-center transition-colors duration-200">
-      <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-      </svg>
-      <h3 class="text-lg font-semibold mb-2">Hacer un Aporte</h3>
-      <p class="text-sm opacity-90">Contribuye con la causa solidaria</p>
-    </a>
-
-    <a href="/comunicacion" class="bg-green-600 hover:bg-green-700 text-white rounded-lg p-6 text-center transition-colors duration-200">
-      <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-      </svg>
-      <h3 class="text-lg font-semibold mb-2">Reportar Necesidad</h3>
-      <p class="text-sm opacity-90">Comunica una situación de emergencia</p>
-    </a>
-
-    <a href="/mapa" class="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-6 text-center transition-colors duration-200">
-      <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
-      </svg>
-      <h3 class="text-lg font-semibold mb-2">Ver Mapa</h3>
-      <p class="text-sm opacity-90">Explora las zonas afectadas</p>
-    </a>
   </div>
 </div>
+
+<!-- AOS Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- CountUp.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.min.js"></script>
+
+<style>
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-20px) translateX(10px); }
+  }
+
+  .bar-animate {
+    animation: barGrow 1.5s ease-out forwards;
+  }
+
+  @keyframes barGrow {
+    to { transform: scaleX(1); }
+  }
+
+  .table-row-animate {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .table-row-animate:nth-child(1) { animation-delay: 0.1s; }
+  .table-row-animate:nth-child(2) { animation-delay: 0.2s; }
+  .table-row-animate:nth-child(3) { animation-delay: 0.3s; }
+  .table-row-animate:nth-child(4) { animation-delay: 0.4s; }
+  .table-row-animate:nth-child(5) { animation-delay: 0.5s; }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  /* Partículas flotantes */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.3;
+    animation: particleFloat 20s infinite;
+  }
+
+  @keyframes particleFloat {
+    0%, 100% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translate(100px, -100px) rotate(90deg);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate(200px, 0) rotate(180deg);
+      opacity: 0.3;
+    }
+    75% {
+      transform: translate(100px, 100px) rotate(270deg);
+      opacity: 0.6;
+    }
+  }
+</style>
+
+<script>
+  // Inicializar AOS
+  AOS.init({
+    duration: 800,
+    once: false,
+    mirror: true
+  });
+
+  // Animar números con CountUp
+  document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-target'));
+      const countUp = new CountUp(counter, target, {
+        duration: 2.5,
+        separator: ',',
+        prefix: counter.classList.contains('counter') && target > 1000000 ? '$' : '',
+      });
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            countUp.start();
+            observer.unobserve(entry.target);
+          }
+        });
+      });
+
+      observer.observe(counter);
+    });
+
+    // Counters pequeños
+    const smallCounters = document.querySelectorAll('.counter-small');
+    smallCounters.forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-target'));
+      const countUp = new CountUp(counter, target, {
+        duration: 2,
+        separator: ',',
+      });
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            countUp.start();
+            observer.unobserve(entry.target);
+          }
+        });
+      });
+
+      observer.observe(counter);
+    });
+
+    // Crear partículas flotantes
+    const particlesContainer = document.getElementById('particles-container');
+    const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b'];
+
+    for (let i = 0; i < 15; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.width = Math.random() * 60 + 20 + 'px';
+      particle.style.height = particle.style.width;
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+      particlesContainer.appendChild(particle);
+    }
+
+    // Parallax effect
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = e.clientY / window.innerHeight;
+
+      document.querySelectorAll('[data-speed]').forEach(el => {
+        const speed = el.getAttribute('data-speed');
+        const x = (window.innerWidth - e.pageX * speed) / 100;
+        const y = (window.innerHeight - e.pageY * speed) / 100;
+        el.style.transform = `translateX(${x}px) translateY(${y}px)`;
+      });
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  });
+</script>
