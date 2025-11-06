@@ -98,6 +98,46 @@ async function bootstrap() {
         if (!obj || typeof obj !== 'object') return 0;
         return Math.max(...Object.values(obj));
       },
+
+      // Verificar si un array contiene un valor
+      contains: (array: any[], value: any) => {
+        if (!Array.isArray(array)) return false;
+        return array.includes(value);
+      },
+
+      // Operaciones matemáticas
+      math: (lvalue: any, operator: string, rvalue: any, operator2?: string, rvalue2?: any) => {
+        lvalue = parseFloat(lvalue);
+        rvalue = parseFloat(rvalue);
+
+        let result: number;
+        switch (operator) {
+          case '+': result = lvalue + rvalue; break;
+          case '-': result = lvalue - rvalue; break;
+          case '*': result = lvalue * rvalue; break;
+          case '/': result = lvalue / rvalue; break;
+          case '%': result = lvalue % rvalue; break;
+          default: return lvalue;
+        }
+
+        if (operator2 && rvalue2) {
+          rvalue2 = parseFloat(rvalue2);
+          switch (operator2) {
+            case '+': result = result + rvalue2; break;
+            case '-': result = result - rvalue2; break;
+            case '*': result = result * rvalue2; break;
+            case '/': result = result / rvalue2; break;
+            case '%': result = result % rvalue2; break;
+          }
+        }
+
+        return Math.round(result);
+      },
+
+      // Mayor o igual que
+      gte: (a: any, b: any) => {
+        return a >= b;
+      },
     }
   });
 

@@ -1,0 +1,243 @@
+<style>
+  body {
+    background: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%);
+  }
+  .content-card {
+    transition: all 0.3s ease;
+  }
+  .content-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+  .category-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+</style>
+
+<div class="min-h-screen py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <a href="/kids?usuario={{usuario}}" class="inline-block mb-4 text-white hover:text-gray-100">
+        <span class="text-3xl">⬅️</span>
+      </a>
+      <h1 class="text-5xl md:text-6xl font-black text-white mb-4">
+        📚 ¡Aprendamos Juntos! 📚
+      </h1>
+      <p class="text-xl md:text-2xl text-white font-semibold">
+        Descubre cosas increíbles sobre tus derechos y cómo ser fuerte
+      </p>
+    </div>
+
+    <!-- Barra de progreso del usuario -->
+    <div class="bg-white rounded-3xl shadow-2xl p-6 mb-8 mx-auto max-w-4xl">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-2xl">
+            😊
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-gray-800">{{usuario}}</h2>
+            <p class="text-sm text-gray-600">Nivel {{progreso.nivel}} - {{formatNumber progreso.puntos}} puntos</p>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-black text-purple-600">⭐</div>
+          <p class="text-xs text-gray-600">{{progreso.insignias.length}} insignias</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Derechos Humanos -->
+    <div class="mb-12">
+      <div class="category-header text-center py-6 rounded-3xl shadow-lg mb-6">
+        <h2 class="text-4xl font-black text-white flex items-center justify-center gap-3">
+          <span>🌟</span>
+          <span>Tus Derechos</span>
+          <span>🌟</span>
+        </h2>
+        <p class="text-white text-lg mt-2">Todos tenemos derechos por el simple hecho de existir</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {{#each contenidos.derechosHumanos}}
+        <div class="content-card bg-white rounded-3xl shadow-xl p-6 cursor-pointer" onclick="mostrarContenido({{this.id}}, 'derechos')">
+          <div class="text-center mb-4">
+            <div class="text-6xl mb-3">
+              {{#if (eq @index 0)}}👥{{/if}}
+              {{#if (eq @index 1)}}📖{{/if}}
+              {{#if (eq @index 2)}}🌳{{/if}}
+            </div>
+            <h3 class="text-2xl font-black text-gray-800 mb-2">{{this.titulo}}</h3>
+          </div>
+          <p class="text-gray-600 text-center mb-4">{{this.descripcion}}</p>
+          <div class="text-center">
+            <span class="inline-block px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-full font-semibold hover:from-blue-500 hover:to-blue-700">
+              ¡Aprende más! →
+            </span>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <!-- Sección: Resiliencia -->
+    <div class="mb-12">
+      <div class="category-header text-center py-6 rounded-3xl shadow-lg mb-6" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <h2 class="text-4xl font-black text-white flex items-center justify-center gap-3">
+          <span>💪</span>
+          <span>Ser Fuerte</span>
+          <span>💪</span>
+        </h2>
+        <p class="text-white text-lg mt-2">Aprende a superar los desafíos con valentía</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        {{#each contenidos.resiliencia}}
+        <div class="content-card bg-white rounded-3xl shadow-xl p-8 cursor-pointer" onclick="mostrarContenido({{this.id}}, 'resiliencia')">
+          <div class="text-center mb-4">
+            <div class="text-7xl mb-3">🦸</div>
+            <h3 class="text-2xl font-black text-gray-800 mb-2">{{this.titulo}}</h3>
+          </div>
+          <p class="text-gray-600 text-center mb-4">{{this.descripcion}}</p>
+          <div class="text-center">
+            <span class="inline-block px-4 py-2 bg-gradient-to-r from-pink-400 to-red-500 text-white rounded-full font-semibold hover:from-pink-500 hover:to-red-600">
+              ¡Descubre cómo! →
+            </span>
+          </div>
+        </div>
+        {{/each}}
+
+        <!-- Placeholder para balance visual -->
+        <div class="bg-gradient-to-br from-pink-100 to-red-100 rounded-3xl shadow-xl p-8 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-7xl mb-3">✨</div>
+            <h3 class="text-2xl font-black text-gray-800 mb-2">¡Más contenido pronto!</h3>
+            <p class="text-gray-600">Estamos preparando más lecciones increíbles para ti</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Autocuidado -->
+    <div class="mb-12">
+      <div class="category-header text-center py-6 rounded-3xl shadow-lg mb-6" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <h2 class="text-4xl font-black text-white flex items-center justify-center gap-3">
+          <span>❤️</span>
+          <span>Cuídate</span>
+          <span>❤️</span>
+        </h2>
+        <p class="text-white text-lg mt-2">Aprende a cuidar de ti mismo y de tu bienestar</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        {{#each contenidos.autocuidado}}
+        <div class="content-card bg-white rounded-3xl shadow-xl p-8 cursor-pointer" onclick="mostrarContenido({{this.id}}, 'autocuidado')">
+          <div class="text-center mb-4">
+            <div class="text-7xl mb-3">🌺</div>
+            <h3 class="text-2xl font-black text-gray-800 mb-2">{{this.titulo}}</h3>
+          </div>
+          <p class="text-gray-600 text-center mb-4">{{this.descripcion}}</p>
+          <div class="text-center">
+            <span class="inline-block px-4 py-2 bg-gradient-to-r from-cyan-400 to-blue-500 text-white rounded-full font-semibold hover:from-cyan-500 hover:to-blue-600">
+              ¡Aprende más! →
+            </span>
+          </div>
+        </div>
+        {{/each}}
+
+        <!-- Tip del día -->
+        <div class="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-3xl shadow-xl p-8">
+          <div class="text-center">
+            <div class="text-7xl mb-3">💡</div>
+            <h3 class="text-2xl font-black text-gray-800 mb-3">Tip del Día</h3>
+            <p class="text-gray-700 text-lg">
+              Recuerda tomar agua y descansar bien. ¡Tu cuerpo y mente te lo agradecerán!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje motivacional -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-2xl mx-auto text-center">
+      <p class="text-2xl font-bold text-gray-800 mb-4">
+        🌈 ¡Cada día aprendes algo nuevo!
+      </p>
+      <p class="text-lg text-gray-600">
+        Sigue explorando y descubriendo todo lo que puedes hacer para ayudar a tu comunidad
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para mostrar contenido completo -->
+<div id="modalContenido" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4" onclick="cerrarModal(event)">
+  <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8" onclick="event.stopPropagation()">
+    <div class="text-right mb-4">
+      <button onclick="cerrarModal()" class="text-4xl hover:text-gray-600 transition-colors">×</button>
+    </div>
+    <div id="contenidoModal">
+      <!-- Contenido dinámico -->
+    </div>
+    <div class="mt-6 text-center">
+      <button onclick="cerrarModal()" class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-bold text-lg hover:from-purple-600 hover:to-pink-600">
+        ¡Entendido! 👍
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const contenidosCompletos = {{{json contenidos}}};
+
+  function mostrarContenido(id, categoria) {
+    const contenido = contenidosCompletos[categoria].find(c => c.id === id);
+    if (!contenido) return;
+
+    const modal = document.getElementById('modalContenido');
+    const contenidoModal = document.getElementById('contenidoModal');
+
+    let emoji = '📚';
+    if (categoria === 'resiliencia') emoji = '💪';
+    if (categoria === 'autocuidado') emoji = '❤️';
+
+    contenidoModal.innerHTML = `
+      <div class="text-center mb-6">
+        <div class="text-8xl mb-4">${emoji}</div>
+        <h2 class="text-3xl md:text-4xl font-black text-gray-800 mb-3">${contenido.titulo}</h2>
+        <p class="text-xl text-gray-600 italic">${contenido.descripcion}</p>
+      </div>
+      <div class="prose prose-lg max-w-none">
+        <p class="text-gray-700 text-lg leading-relaxed whitespace-pre-line">${contenido.contenido}</p>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    // Registrar actividad y agregar puntos
+    fetch('/kids/api/agregar-puntos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        usuario: '{{usuario}}',
+        puntos: 20,
+        actividad: 'lectura_educativa'
+      })
+    });
+  }
+
+  function cerrarModal(event) {
+    const modal = document.getElementById('modalContenido');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  // Cerrar modal con tecla Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      cerrarModal();
+    }
+  });
+</script>

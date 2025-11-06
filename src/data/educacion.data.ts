@@ -19,6 +19,7 @@ export interface Juego {
   nivelDificultad: 'Fácil' | 'Medio' | 'Difícil';
   tematicas: string[];
   imagen: string;
+  icono: string;
 }
 
 export const cuentosData: Cuento[] = [
@@ -70,6 +71,7 @@ export const juegosData: Juego[] = [
     nivelDificultad: 'Fácil',
     tematicas: ['Evacuación', 'Prevención', 'Seguridad'],
     imagen: '/images/kids/juego-evacua.png',
+    icono: '🚨',
   },
   {
     id: 2,
@@ -80,6 +82,7 @@ export const juegosData: Juego[] = [
     nivelDificultad: 'Medio',
     tematicas: ['Agua', 'Medio Ambiente'],
     imagen: '/images/kids/juego-agua.png',
+    icono: '💧',
   },
   {
     id: 3,
@@ -90,6 +93,7 @@ export const juegosData: Juego[] = [
     nivelDificultad: 'Medio',
     tematicas: ['Solidaridad', 'Planificación', 'Comunidad'],
     imagen: '/images/kids/juego-albergue.png',
+    icono: '🏠',
   },
   {
     id: 4,
@@ -100,5 +104,6 @@ export const juegosData: Juego[] = [
     nivelDificultad: 'Difícil',
     tematicas: ['Prevención', 'Resiliencia', 'Naturaleza'],
     imagen: '/images/kids/juego-clima.png',
+    icono: '🌪️',
   },
 ];

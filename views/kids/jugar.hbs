@@ -1,0 +1,275 @@
+<style>
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .game-container {
+    min-height: 500px;
+  }
+  .game-option {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .game-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  .game-option.selected {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: white;
+  }
+  .game-option.incorrect {
+    background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+    color: white;
+    animation: shake 0.5s;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+</style>
+
+<div class="min-h-screen py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <a href="/kids/juega?usuario={{usuario}}" class="inline-block mb-4 text-white hover:text-gray-100">
+        <span class="text-3xl">⬅️ Volver</span>
+      </a>
+      <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+        {{juego.nombre}}
+      </h1>
+      <p class="text-xl text-white">{{juego.descripcion}}</p>
+    </div>
+
+    <!-- Contenedor del juego -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-4xl mx-auto game-container">
+      <!-- Información del juego -->
+      <div class="flex justify-between items-center mb-6 pb-6 border-b-2 border-gray-200">
+        <div class="flex items-center gap-3">
+          <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-bold">
+            {{juego.tipo}}
+          </span>
+          <span class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-bold">
+            +{{juego.puntos}} puntos
+          </span>
+        </div>
+        <div class="text-right">
+          <div class="text-3xl font-black text-gray-800" id="puntosActuales">0</div>
+          <p class="text-sm text-gray-600">Puntos ganados</p>
+        </div>
+      </div>
+
+      <!-- Área del juego -->
+      <div id="gameArea" class="mb-6">
+        <!-- El contenido se cargará dinámicamente según el tipo de juego -->
+      </div>
+
+      <!-- Botones de acción -->
+      <div id="gameActions" class="text-center">
+        <button id="startBtn" onclick="iniciarJuego()" class="px-8 py-4 bg-gradient-to-r from-green-500 to-blue-500 text-white text-xl font-bold rounded-full hover:from-green-600 hover:to-blue-600 shadow-lg">
+          ¡Comenzar Juego! 🚀
+        </button>
+      </div>
+    </div>
+
+    <!-- Tips del juego -->
+    <div class="bg-white rounded-3xl shadow-2xl p-6 max-w-4xl mx-auto mt-8">
+      <h3 class="text-2xl font-black text-gray-800 mb-4 text-center">💡 ¿Qué aprenderás?</h3>
+      <div class="flex flex-wrap gap-2 justify-center">
+        {{#each juego.tematicas}}
+        <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full font-semibold">
+          {{this}}
+        </span>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de felicitaciones -->
+<div id="modalFelicitaciones" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-8 text-center fade-in">
+    <div class="text-8xl mb-4">🎉</div>
+    <h2 class="text-4xl font-black text-gray-800 mb-4">¡Felicitaciones!</h2>
+    <p class="text-2xl text-gray-700 mb-4">Has completado el juego</p>
+    <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-2xl p-6 mb-6">
+      <p class="text-lg text-gray-700 mb-2">Ganaste</p>
+      <p class="text-5xl font-black text-orange-600" id="puntosGanados">{{juego.puntos}}</p>
+      <p class="text-lg text-gray-700">puntos</p>
+    </div>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="/kids/juega?usuario={{usuario}}" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full font-bold hover:from-blue-600 hover:to-purple-600">
+        Ver más juegos
+      </a>
+      <button onclick="reiniciarJuego()" class="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-full font-bold hover:from-green-600 hover:to-teal-600">
+        Jugar de nuevo
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const juegoData = {{{json juego}}};
+  const usuario = '{{usuario}}';
+  let puntosGanados = 0;
+  let juegoIniciado = false;
+
+  // Contenido de los juegos
+  const contenidosJuegos = {
+    1: { // Evacua Rápido
+      tipo: 'simulacion',
+      preguntas: [
+        { pregunta: '¿Qué debes hacer primero en una evacuación?', opciones: ['Tomar tus pertenencias', 'Mantener la calma', 'Correr lo más rápido posible'], correcta: 1 },
+        { pregunta: '¿Hacia dónde debes dirigirte?', opciones: ['Al punto de encuentro más cercano', 'A tu habitación', 'A la azotea'], correcta: 0 },
+        { pregunta: '¿Qué debes llevar contigo?', opciones: ['Todos tus juguetes', 'Documentos importantes', 'Comida para varios días'], correcta: 1 },
+      ]
+    },
+    2: { // Detective del Agua
+      tipo: 'trivia',
+      preguntas: [
+        { pregunta: '¿Cuánta agua debemos tomar al día?', opciones: ['1 vaso', '8 vasos', '20 vasos'], correcta: 1 },
+        { pregunta: '¿Qué porcentaje del planeta es agua?', opciones: ['50%', '70%', '90%'], correcta: 1 },
+        { pregunta: '¿Cómo podemos ahorrar agua?', opciones: ['Cerrando el grifo al cepillarnos', 'Dejando el grifo abierto', 'Usando más agua'], correcta: 0 },
+        { pregunta: '¿Por qué es importante el agua?', opciones: ['Solo para bañarnos', 'Es vital para la vida', 'No es importante'], correcta: 1 },
+      ]
+    },
+    3: { // Construye tu Albergue
+      tipo: 'estrategia',
+      preguntas: [
+        { pregunta: '¿Qué necesita un albergue seguro?', opciones: ['Solo paredes', 'Agua, comida y espacio seguro', 'Solo comida'], correcta: 1 },
+        { pregunta: '¿Dónde debe ubicarse un albergue?', opciones: ['En zona de riesgo', 'En terreno seguro y accesible', 'En cualquier lugar'], correcta: 1 },
+        { pregunta: '¿Qué servicios básicos necesita?', opciones: ['Solo electricidad', 'Agua, baños y primeros auxilios', 'Ninguno'], correcta: 1 },
+      ]
+    },
+    4: { // Héroes del Clima
+      tipo: 'aventura',
+      preguntas: [
+        { pregunta: 'Una inundación se acerca. ¿Qué haces?', opciones: ['Ir al río a ver', 'Alertar a la comunidad y evacuar', 'Ignorar la situación'], correcta: 1 },
+        { pregunta: 'Hay un deslizamiento de tierra. ¿A quién llamas?', opciones: ['A nadie', 'A las autoridades y defensa civil', 'A tus amigos solamente'], correcta: 1 },
+        { pregunta: 'Después del desastre, ¿cómo ayudas?', opciones: ['Me voy del lugar', 'Ayudo a limpiar y organizar', 'Solo miro'], correcta: 1 },
+        { pregunta: '¿Cómo previenes futuros desastres?', opciones: ['No hago nada', 'Siembro árboles y cuido la naturaleza', 'Espero que pase'], correcta: 1 },
+      ]
+    }
+  };
+
+  function iniciarJuego() {
+    juegoIniciado = true;
+    document.getElementById('startBtn').style.display = 'none';
+    cargarJuego();
+  }
+
+  function cargarJuego() {
+    const contenido = contenidosJuegos[juegoData.id];
+    if (!contenido) return;
+
+    const gameArea = document.getElementById('gameArea');
+    gameArea.innerHTML = '<div class="text-center"><div class="text-6xl mb-4">🎮</div><p class="text-xl text-gray-700">Cargando juego...</p></div>';
+
+    setTimeout(() => {
+      mostrarPregunta(0, contenido.preguntas);
+    }, 500);
+  }
+
+  let preguntaActual = 0;
+  let preguntasCorrectas = 0;
+
+  function mostrarPregunta(index, preguntas) {
+    if (index >= preguntas.length) {
+      completarJuego();
+      return;
+    }
+
+    const pregunta = preguntas[index];
+    const gameArea = document.getElementById('gameArea');
+
+    gameArea.innerHTML = `
+      <div class="fade-in">
+        <div class="text-center mb-8">
+          <span class="text-lg font-bold text-gray-600">Pregunta ${index + 1} de ${preguntas.length}</span>
+          <div class="w-full bg-gray-200 rounded-full h-3 mt-2">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all" style="width: ${(index / preguntas.length) * 100}%"></div>
+          </div>
+        </div>
+
+        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">${pregunta.pregunta}</h3>
+
+        <div class="space-y-4">
+          ${pregunta.opciones.map((opcion, i) => `
+            <div class="game-option bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl border-2 border-gray-200" onclick="seleccionarRespuesta(${i}, ${pregunta.correcta}, ${index})">
+              <p class="text-lg font-semibold text-gray-800">${opcion}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    preguntaActual = index;
+  }
+
+  function seleccionarRespuesta(seleccionada, correcta, index) {
+    const opciones = document.querySelectorAll('.game-option');
+    opciones.forEach(op => op.style.pointerEvents = 'none');
+
+    const opcionSeleccionada = opciones[seleccionada];
+
+    if (seleccionada === correcta) {
+      opcionSeleccionada.classList.add('selected');
+      preguntasCorrectas++;
+      const puntosPorPregunta = Math.floor(juegoData.puntos / contenidosJuegos[juegoData.id].preguntas.length);
+      puntosGanados += puntosPorPregunta;
+      document.getElementById('puntosActuales').textContent = puntosGanados;
+
+      setTimeout(() => {
+        mostrarPregunta(index + 1, contenidosJuegos[juegoData.id].preguntas);
+      }, 1000);
+    } else {
+      opcionSeleccionada.classList.add('incorrect');
+      opciones[correcta].classList.add('selected');
+
+      setTimeout(() => {
+        mostrarPregunta(index + 1, contenidosJuegos[juegoData.id].preguntas);
+      }, 1500);
+    }
+  }
+
+  function completarJuego() {
+    // Asegurar que se otorguen todos los puntos si el jugador respondió bien
+    if (puntosGanados < juegoData.puntos) {
+      puntosGanados = juegoData.puntos;
+    }
+
+    // Registrar juego completado
+    fetch('/kids/api/completar-juego', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        usuario: usuario,
+        juegoId: juegoData.id
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('puntosGanados').textContent = puntosGanados;
+      document.getElementById('modalFelicitaciones').classList.remove('hidden');
+      document.getElementById('modalFelicitaciones').classList.add('flex');
+    });
+  }
+
+  function reiniciarJuego() {
+    puntosGanados = 0;
+    preguntaActual = 0;
+    preguntasCorrectas = 0;
+    document.getElementById('puntosActuales').textContent = '0';
+    document.getElementById('modalFelicitaciones').classList.add('hidden');
+    document.getElementById('modalFelicitaciones').classList.remove('flex');
+    cargarJuego();
+  }
+</script>

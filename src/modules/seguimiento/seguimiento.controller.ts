@@ -1,5 +1,5 @@
 import { Controller, Get, Render, Query, Res } from '@nestjs/common';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { SeguimientoService } from './seguimiento.service';
 
 @Controller('seguimiento')

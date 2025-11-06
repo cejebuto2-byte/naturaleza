@@ -1,0 +1,307 @@
+<style>
+  body {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  }
+  .story-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::after {
+    content: '📖';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    font-size: 150px;
+    opacity: 0.1;
+    transition: all 0.3s ease;
+  }
+  .story-card:hover::after {
+    top: -20px;
+    right: -20px;
+    opacity: 0.2;
+  }
+  .story-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  .book-spine {
+    width: 8px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 4px 0 0 4px;
+  }
+</style>
+
+<div class="min-h-screen py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <a href="/kids?usuario={{usuario}}" class="inline-block mb-4 text-white hover:text-gray-100">
+        <span class="text-3xl">⬅️</span>
+      </a>
+      <h1 class="text-5xl md:text-6xl font-black text-white mb-4">
+        📖 Biblioteca de Cuentos 📖
+      </h1>
+      <p class="text-xl md:text-2xl text-white font-semibold">
+        Lee historias mágicas que te enseñarán cosas increíbles
+      </p>
+    </div>
+
+    <!-- Barra de progreso del usuario -->
+    <div class="bg-white rounded-3xl shadow-2xl p-6 mb-8 mx-auto max-w-4xl">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center text-2xl">
+            📚
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-gray-800">{{usuario}}</h2>
+            <p class="text-sm text-gray-600">Nivel {{progreso.nivel}} - {{formatNumber progreso.puntos}} puntos</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="text-center">
+            <div class="text-3xl font-black text-orange-600">{{progreso.cuentosLeidos.length}}</div>
+            <p class="text-xs text-gray-600">Cuentos leídos</p>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-black text-purple-600">⭐</div>
+            <p class="text-xs text-gray-600">{{progreso.insignias.length}} insignias</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="bg-white rounded-3xl shadow-2xl p-6 mb-8 mx-auto max-w-4xl">
+      <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <!-- Selector de idioma -->
+        <div class="flex items-center gap-3">
+          <label class="text-gray-700 font-bold">Idioma:</label>
+          <select onchange="cambiarIdioma(this.value)" class="px-4 py-2 border-2 border-gray-300 rounded-full font-semibold focus:outline-none focus:border-purple-500">
+            <option value="español" {{#if (eq idiomaSeleccionado 'español')}}selected{{/if}}>🇪🇸 Español</option>
+            <option value="wayuu">🌎 Wayúu (Próximamente)</option>
+            <option value="nasa">🌎 Nasa Yuwe (Próximamente)</option>
+          </select>
+        </div>
+
+        <!-- Filtros de categoría -->
+        <div class="flex gap-2 flex-wrap justify-center">
+          <button onclick="filtrarCuentos('todos')" class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-bold hover:from-purple-600 hover:to-pink-600 filter-btn" data-filter="todos">
+            Todos
+          </button>
+          <button onclick="filtrarCuentos('Solidaridad')" class="px-4 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-full font-bold hover:bg-gray-100 filter-btn" data-filter="Solidaridad">
+            Solidaridad
+          </button>
+          <button onclick="filtrarCuentos('Medio Ambiente')" class="px-4 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-full font-bold hover:bg-gray-100 filter-btn" data-filter="Medio Ambiente">
+            Medio Ambiente
+          </button>
+          <button onclick="filtrarCuentos('Derechos Humanos')" class="px-4 py-2 bg-white border-2 border-gray-300 text-gray-700 rounded-full font-bold hover:bg-gray-100 filter-btn" data-filter="Derechos Humanos">
+            Derechos Humanos
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid de cuentos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
+      {{#each cuentos}}
+      <a href="/kids/cuento/{{this.id}}?usuario={{../usuario}}" class="story-card bg-white rounded-3xl shadow-2xl p-6 block" data-categoria="{{this.categoria}}">
+        <!-- Lomo del libro -->
+        <div class="book-spine
+          {{#if (eq this.categoria 'Solidaridad')}}bg-gradient-to-b from-blue-400 to-blue-600{{/if}}
+          {{#if (eq this.categoria 'Medio Ambiente')}}bg-gradient-to-b from-green-400 to-green-600{{/if}}
+          {{#if (eq this.categoria 'Derechos Humanos')}}bg-gradient-to-b from-purple-400 to-purple-600{{/if}}
+        "></div>
+
+        <!-- Contenido -->
+        <div class="ml-4">
+          <!-- Badge de categoría -->
+          <div class="flex justify-between items-start mb-4">
+            <span class="px-3 py-1 rounded-full text-xs font-bold
+              {{#if (eq this.categoria 'Solidaridad')}}bg-blue-100 text-blue-800{{/if}}
+              {{#if (eq this.categoria 'Medio Ambiente')}}bg-green-100 text-green-800{{/if}}
+              {{#if (eq this.categoria 'Derechos Humanos')}}bg-purple-100 text-purple-800{{/if}}
+            ">
+              {{this.categoria}}
+            </span>
+            {{#if (contains ../progreso.cuentosLeidos this.id)}}
+            <span class="text-2xl" title="¡Ya leído!">✓</span>
+            {{/if}}
+          </div>
+
+          <!-- Título -->
+          <h3 class="text-2xl font-black text-gray-800 mb-3">{{this.titulo}}</h3>
+
+          <!-- Autor e info -->
+          <p class="text-sm text-gray-600 mb-2">Por {{this.autor}}</p>
+
+          <!-- Resumen -->
+          <p class="text-gray-700 mb-4 text-sm leading-relaxed">{{this.resumen}}</p>
+
+          <!-- Metadata -->
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-semibold">
+              👶 {{this.edadRecomendada}}
+            </span>
+            <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-semibold">
+              ⏱️ {{this.duracionLectura}}
+            </span>
+          </div>
+
+          <!-- Botón -->
+          <div class="text-center">
+            {{#if (contains ../progreso.cuentosLeidos this.id)}}
+            <span class="inline-block px-4 py-2 bg-gradient-to-r from-green-400 to-teal-500 text-white rounded-full font-semibold">
+              Leer de nuevo 📖
+            </span>
+            {{else}}
+            <span class="inline-block px-4 py-2 bg-gradient-to-r from-orange-400 to-pink-500 text-white rounded-full font-semibold hover:from-orange-500 hover:to-pink-600">
+              ¡Leer ahora! 📖
+            </span>
+            {{/if}}
+          </div>
+        </div>
+      </a>
+      {{/each}}
+    </div>
+
+    <!-- Estadísticas de lectura -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-4xl mx-auto mb-8">
+      <h2 class="text-3xl font-black text-gray-800 mb-6 text-center">📊 Tu Progreso Lector</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center p-6 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl">
+          <div class="text-5xl mb-2">📚</div>
+          <div class="text-3xl font-black text-orange-800">{{progreso.cuentosLeidos.length}}</div>
+          <p class="text-orange-700 font-semibold">Leídos</p>
+        </div>
+        <div class="text-center p-6 bg-gradient-to-br from-pink-100 to-pink-200 rounded-2xl">
+          <div class="text-5xl mb-2">📖</div>
+          <div class="text-3xl font-black text-pink-800">{{cuentos.length}}</div>
+          <p class="text-pink-700 font-semibold">Disponibles</p>
+        </div>
+        <div class="text-center p-6 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl">
+          <div class="text-5xl mb-2">🎯</div>
+          <div class="text-3xl font-black text-purple-800">
+            {{#if progreso.cuentosLeidos.length}}
+              {{math progreso.cuentosLeidos.length '*' 100 '/' cuentos.length}}%
+            {{else}}
+              0%
+            {{/if}}
+          </div>
+          <p class="text-purple-700 font-semibold">Completado</p>
+        </div>
+      </div>
+
+      <!-- Insignia de lectura -->
+      {{#if (gte progreso.cuentosLeidos.length 3)}}
+      <div class="mt-6 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-2xl p-6 text-center">
+        <div class="text-6xl mb-2">🏆</div>
+        <h3 class="text-2xl font-black text-gray-800 mb-2">¡Lector Curioso!</h3>
+        <p class="text-gray-700">Has desbloqueado la insignia de Lector Curioso por leer 3 o más cuentos</p>
+      </div>
+      {{/if}}
+    </div>
+
+    <!-- Mensaje motivacional -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-2xl mx-auto text-center">
+      <p class="text-2xl font-bold text-gray-800 mb-4">
+        {{#if (eq progreso.cuentosLeidos.length 0)}}
+        🌟 ¡Comienza tu aventura de lectura!
+        {{else if (eq progreso.cuentosLeidos.length cuentos.length)}}
+        🎉 ¡Increíble! ¡Has leído todos los cuentos!
+        {{else}}
+        📚 ¡Sigue leyendo y descubriendo!
+        {{/if}}
+      </p>
+      <p class="text-lg text-gray-600">
+        {{#if (eq progreso.cuentosLeidos.length 0)}}
+        Cada cuento que lees te da 50 puntos y te enseña algo valioso
+        {{else if (eq progreso.cuentosLeidos.length cuentos.length)}}
+        Pronto tendremos más cuentos increíbles para ti
+        {{else}}
+        Lee todos los cuentos para convertirte en un <span class="text-orange-600 font-bold">Maestro Lector</span>
+        {{/if}}
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function cambiarIdioma(idioma) {
+    if (idioma !== 'español') {
+      alert('¡Pronto tendremos cuentos en ' + idioma + '! 🌟');
+      return;
+    }
+    window.location.href = '/kids/cuentos?usuario={{usuario}}&idioma=' + idioma;
+  }
+
+  function filtrarCuentos(categoria) {
+    const cards = document.querySelectorAll('.story-card');
+    const buttons = document.querySelectorAll('.filter-btn');
+
+    // Actualizar botones
+    buttons.forEach(btn => {
+      btn.classList.remove('bg-gradient-to-r', 'from-purple-500', 'to-pink-500', 'text-white');
+      btn.classList.add('bg-white', 'border-2', 'border-gray-300', 'text-gray-700');
+    });
+
+    const activeBtn = document.querySelector(`[data-filter="${categoria}"]`);
+    if (activeBtn) {
+      activeBtn.classList.remove('bg-white', 'border-2', 'border-gray-300', 'text-gray-700');
+      activeBtn.classList.add('bg-gradient-to-r', 'from-purple-500', 'to-pink-500', 'text-white');
+    }
+
+    // Filtrar cards
+    cards.forEach(card => {
+      if (categoria === 'todos') {
+        card.style.display = 'block';
+      } else {
+        const cardCategoria = card.getAttribute('data-categoria');
+        card.style.display = cardCategoria === categoria ? 'block' : 'none';
+      }
+    });
+  }
+
+  // Helper para verificar si array contiene valor (duplicado del anterior)
+  Handlebars.registerHelper('contains', function(array, value) {
+    return array && array.includes(value);
+  });
+
+  // Helper para mayor o igual que
+  Handlebars.registerHelper('gte', function(a, b) {
+    return a >= b;
+  });
+
+  // Helper para matemáticas (duplicado del anterior)
+  Handlebars.registerHelper('math', function(lvalue, operator, rvalue, operator2, rvalue2) {
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+
+    let result;
+    switch (operator) {
+      case '+': result = lvalue + rvalue; break;
+      case '-': result = lvalue - rvalue; break;
+      case '*': result = lvalue * rvalue; break;
+      case '/': result = lvalue / rvalue; break;
+      case '%': result = lvalue % rvalue; break;
+      default: return lvalue;
+    }
+
+    if (operator2 && rvalue2) {
+      rvalue2 = parseFloat(rvalue2);
+      switch (operator2) {
+        case '+': result = result + rvalue2; break;
+        case '-': result = result - rvalue2; break;
+        case '*': result = result * rvalue2; break;
+        case '/': result = result / rvalue2; break;
+        case '%': result = result % rvalue2; break;
+      }
+    }
+
+    return Math.round(result);
+  });
+</script>

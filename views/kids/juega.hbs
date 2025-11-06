@@ -1,0 +1,249 @@
+<style>
+  body {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  }
+  .game-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+  }
+  .game-card:hover::before {
+    left: 100%;
+  }
+  .game-card:hover {
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  .difficulty-badge {
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+</style>
+
+<div class="min-h-screen py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <a href="/kids?usuario={{usuario}}" class="inline-block mb-4 text-white hover:text-gray-100">
+        <span class="text-3xl">⬅️</span>
+      </a>
+      <h1 class="text-5xl md:text-6xl font-black text-white mb-4 animate-bounce">
+        🎮 ¡A Jugar! 🎮
+      </h1>
+      <p class="text-xl md:text-2xl text-white font-semibold">
+        Diviértete mientras aprendes cosas increíbles
+      </p>
+    </div>
+
+    <!-- Barra de progreso del usuario -->
+    <div class="bg-white rounded-3xl shadow-2xl p-6 mb-8 mx-auto max-w-4xl">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-2xl">
+            🎯
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-gray-800">{{usuario}}</h2>
+            <p class="text-sm text-gray-600">Nivel {{progreso.nivel}} - {{formatNumber progreso.puntos}} puntos</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="text-center">
+            <div class="text-3xl font-black text-green-600">{{progreso.juegosCompletados.length}}</div>
+            <p class="text-xs text-gray-600">Juegos completados</p>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-black text-purple-600">⭐</div>
+            <p class="text-xs text-gray-600">{{progreso.insignias.length}} insignias</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros de dificultad -->
+    <div class="flex justify-center gap-4 mb-8 flex-wrap">
+      <button onclick="filtrarJuegos('todos')" class="px-6 py-3 bg-white text-gray-800 rounded-full font-bold hover:bg-gray-100 transition-all shadow-lg filter-btn active" data-filter="todos">
+        🌟 Todos
+      </button>
+      <button onclick="filtrarJuegos('Fácil')" class="px-6 py-3 bg-white text-gray-800 rounded-full font-bold hover:bg-gray-100 transition-all shadow-lg filter-btn" data-filter="Fácil">
+        😊 Fácil
+      </button>
+      <button onclick="filtrarJuegos('Medio')" class="px-6 py-3 bg-white text-gray-800 rounded-full font-bold hover:bg-gray-100 transition-all shadow-lg filter-btn" data-filter="Medio">
+        🤔 Medio
+      </button>
+      <button onclick="filtrarJuegos('Difícil')" class="px-6 py-3 bg-white text-gray-800 rounded-full font-bold hover:bg-gray-100 transition-all shadow-lg filter-btn" data-filter="Difícil">
+        🔥 Difícil
+      </button>
+    </div>
+
+    <!-- Grid de juegos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto mb-12">
+      {{#each juegos}}
+      <a href="/kids/juego/{{this.id}}?usuario={{../usuario}}" class="game-card bg-white rounded-3xl shadow-2xl p-6 block" data-dificultad="{{this.nivelDificultad}}">
+        <!-- Badge de dificultad -->
+        <div class="flex justify-between items-start mb-4">
+          <span class="difficulty-badge px-3 py-1 rounded-full text-xs font-bold
+            {{#if (eq this.nivelDificultad 'Fácil')}}bg-green-100 text-green-800{{/if}}
+            {{#if (eq this.nivelDificultad 'Medio')}}bg-yellow-100 text-yellow-800{{/if}}
+            {{#if (eq this.nivelDificultad 'Difícil')}}bg-red-100 text-red-800{{/if}}
+          ">
+            {{this.nivelDificultad}}
+          </span>
+          <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold">
+            +{{this.puntos}} pts
+          </span>
+        </div>
+
+        <!-- Icono del juego -->
+        <div class="text-center mb-4">
+          <div class="text-7xl mb-3">{{this.icono}}</div>
+        </div>
+
+        <!-- Información del juego -->
+        <div class="text-center">
+          <h3 class="text-2xl font-black text-gray-800 mb-2">{{this.nombre}}</h3>
+          <p class="text-gray-600 mb-4 text-sm">{{this.descripcion}}</p>
+
+          <!-- Indicador de completado -->
+          {{#if (contains ../progreso.juegosCompletados this.id)}}
+          <div class="inline-block px-4 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full font-semibold mb-2">
+            ✓ ¡Completado!
+          </div>
+          {{else}}
+          <div class="inline-block px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white rounded-full font-semibold hover:from-blue-500 hover:to-purple-600">
+            ¡Jugar! →
+          </div>
+          {{/if}}
+        </div>
+      </a>
+      {{/each}}
+    </div>
+
+    <!-- Estadísticas de juegos -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-4xl mx-auto mb-8">
+      <h2 class="text-3xl font-black text-gray-800 mb-6 text-center">🏆 Tus Logros en Juegos</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center p-6 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl">
+          <div class="text-5xl mb-2">🎯</div>
+          <div class="text-3xl font-black text-green-800">{{progreso.juegosCompletados.length}}</div>
+          <p class="text-green-700 font-semibold">Completados</p>
+        </div>
+        <div class="text-center p-6 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl">
+          <div class="text-5xl mb-2">🎮</div>
+          <div class="text-3xl font-black text-blue-800">{{juegos.length}}</div>
+          <p class="text-blue-700 font-semibold">Disponibles</p>
+        </div>
+        <div class="text-center p-6 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl">
+          <div class="text-5xl mb-2">⚡</div>
+          <div class="text-3xl font-black text-purple-800">
+            {{#if progreso.juegosCompletados.length}}
+              {{math progreso.juegosCompletados.length '*' 100 '/' juegos.length}}%
+            {{else}}
+              0%
+            {{/if}}
+          </div>
+          <p class="text-purple-700 font-semibold">Progreso</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje motivacional -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-2xl mx-auto text-center">
+      <p class="text-2xl font-bold text-gray-800 mb-4">
+        {{#if (eq progreso.juegosCompletados.length 0)}}
+        🌟 ¡Comienza tu aventura!
+        {{else if (eq progreso.juegosCompletados.length juegos.length)}}
+        🏆 ¡Eres un campeón! ¡Has completado todos los juegos!
+        {{else}}
+        💪 ¡Sigue así! ¡Cada juego te hace más fuerte!
+        {{/if}}
+      </p>
+      <p class="text-lg text-gray-600">
+        {{#if (eq progreso.juegosCompletados.length 0)}}
+        Cada juego que completes te ayudará a aprender más sobre cómo cuidar tu comunidad
+        {{else if (eq progreso.juegosCompletados.length juegos.length)}}
+        Vuelve pronto para jugar nuevos juegos que estamos preparando para ti
+        {{else}}
+        Completa todos los juegos para ganar la insignia de <span class="text-purple-600 font-bold">Jugador Experto</span>
+        {{/if}}
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function filtrarJuegos(dificultad) {
+    const cards = document.querySelectorAll('.game-card');
+    const buttons = document.querySelectorAll('.filter-btn');
+
+    // Actualizar botones activos
+    buttons.forEach(btn => {
+      btn.classList.remove('active', 'bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'text-white');
+      btn.classList.add('bg-white', 'text-gray-800');
+    });
+
+    const activeBtn = document.querySelector(`[data-filter="${dificultad}"]`);
+    if (activeBtn) {
+      activeBtn.classList.remove('bg-white', 'text-gray-800');
+      activeBtn.classList.add('active', 'bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'text-white');
+    }
+
+    // Filtrar cards
+    cards.forEach(card => {
+      if (dificultad === 'todos') {
+        card.style.display = 'block';
+      } else {
+        const cardDificultad = card.getAttribute('data-dificultad');
+        card.style.display = cardDificultad === dificultad ? 'block' : 'none';
+      }
+    });
+  }
+
+  // Helper para verificar si array contiene valor
+  Handlebars.registerHelper('contains', function(array, value) {
+    return array && array.includes(value);
+  });
+
+  // Helper para matemáticas
+  Handlebars.registerHelper('math', function(lvalue, operator, rvalue, operator2, rvalue2) {
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+
+    let result;
+    switch (operator) {
+      case '+': result = lvalue + rvalue; break;
+      case '-': result = lvalue - rvalue; break;
+      case '*': result = lvalue * rvalue; break;
+      case '/': result = lvalue / rvalue; break;
+      case '%': result = lvalue % rvalue; break;
+      default: return lvalue;
+    }
+
+    if (operator2 && rvalue2) {
+      rvalue2 = parseFloat(rvalue2);
+      switch (operator2) {
+        case '+': result = result + rvalue2; break;
+        case '-': result = result - rvalue2; break;
+        case '*': result = result * rvalue2; break;
+        case '/': result = result / rvalue2; break;
+        case '%': result = result % rvalue2; break;
+      }
+    }
+
+    return Math.round(result);
+  });
+</script>
