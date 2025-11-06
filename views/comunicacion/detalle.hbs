@@ -1,0 +1,296 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <a href="/comunicacion" class="text-blue-600 hover:text-blue-700 flex items-center mb-4">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+      </svg>
+      Volver a reportes
+    </a>
+    <div class="flex justify-between items-start flex-wrap gap-4">
+      <div>
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">Reporte #{{reporte.id}}</h1>
+        <p class="text-gray-600">{{reporte.municipio}}, {{reporte.departamento}}</p>
+      </div>
+      <div class="flex gap-3">
+        <span class="px-4 py-2 rounded-full text-sm font-semibold
+          {{#if (eq reporte.estado 'nuevo')}}bg-blue-100 text-blue-800{{/if}}
+          {{#if (eq reporte.estado 'en_revision')}}bg-yellow-100 text-yellow-800{{/if}}
+          {{#if (eq reporte.estado 'en_atencion')}}bg-orange-100 text-orange-800{{/if}}
+          {{#if (eq reporte.estado 'resuelto')}}bg-green-100 text-green-800{{/if}}
+        ">
+          {{#if (eq reporte.estado 'nuevo')}}Nuevo{{/if}}
+          {{#if (eq reporte.estado 'en_revision')}}En Revisión{{/if}}
+          {{#if (eq reporte.estado 'en_atencion')}}En Atención{{/if}}
+          {{#if (eq reporte.estado 'resuelto')}}Resuelto{{/if}}
+        </span>
+
+        <span class="px-4 py-2 rounded-full text-sm font-semibold
+          {{#if (eq reporte.nivelUrgencia 'critica')}}bg-red-500 text-white{{/if}}
+          {{#if (eq reporte.nivelUrgencia 'alta')}}bg-orange-500 text-white{{/if}}
+          {{#if (eq reporte.nivelUrgencia 'media')}}bg-yellow-400 text-gray-900{{/if}}
+          {{#if (eq reporte.nivelUrgencia 'baja')}}bg-green-500 text-white{{/if}}
+        ">
+          Urgencia:
+          {{#if (eq reporte.nivelUrgencia 'critica')}}Crítica{{/if}}
+          {{#if (eq reporte.nivelUrgencia 'alta')}}Alta{{/if}}
+          {{#if (eq reporte.nivelUrgencia 'media')}}Media{{/if}}
+          {{#if (eq reporte.nivelUrgencia 'baja')}}Baja{{/if}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje de éxito -->
+  {{#if mensajeExito}}
+  <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded mb-6 shadow">
+    <div class="flex items-center">
+      <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+      <p class="font-semibold">{{mensajeExito}}</p>
+    </div>
+  </div>
+  {{/if}}
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Columna principal -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Información del reporte -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Detalles del Reporte</h2>
+
+        <div class="space-y-4">
+          <div>
+            <p class="text-sm font-medium text-gray-500">Tipo de Necesidad</p>
+            <p class="text-lg text-gray-800">{{reporte.tipoNecesidad}}</p>
+          </div>
+
+          <div>
+            <p class="text-sm font-medium text-gray-500">Descripción</p>
+            <p class="text-gray-800 whitespace-pre-line">{{reporte.descripcion}}</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 pt-4 border-t">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Región</p>
+              <p class="text-gray-800">{{reporte.region}}</p>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-500">Fecha del Reporte</p>
+              <p class="text-gray-800">{{formatDate reporte.fechaReporte}}</p>
+            </div>
+            {{#if reporte.personasAfectadas}}
+            <div>
+              <p class="text-sm font-medium text-gray-500">Personas Afectadas</p>
+              <p class="text-gray-800">{{formatNumber reporte.personasAfectadas}}</p>
+            </div>
+            {{/if}}
+            {{#if reporte.archivoAdjunto}}
+            <div>
+              <p class="text-sm font-medium text-gray-500">Archivo Adjunto</p>
+              <p class="text-blue-600 text-sm">{{reporte.archivoAdjunto}}</p>
+            </div>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline de respuestas -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Seguimiento y Respuestas</h2>
+
+        {{#if reporte.respuestas.length}}
+        <div class="space-y-6">
+          {{#each reporte.respuestas}}
+          <div class="flex gap-4">
+            <!-- Indicador de tipo -->
+            <div class="flex-shrink-0">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center
+                {{#if (eq this.tipo 'accion')}}bg-green-100{{/if}}
+                {{#if (eq this.tipo 'comentario')}}bg-blue-100{{/if}}
+                {{#if (eq this.tipo 'solicitud_info')}}bg-yellow-100{{/if}}
+              ">
+                {{#if (eq this.tipo 'accion')}}
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                {{/if}}
+                {{#if (eq this.tipo 'comentario')}}
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                {{/if}}
+                {{#if (eq this.tipo 'solicitud_info')}}
+                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                {{/if}}
+              </div>
+            </div>
+
+            <!-- Contenido de la respuesta -->
+            <div class="flex-1">
+              <div class="bg-gray-50 rounded-lg p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <div>
+                    <p class="font-semibold text-gray-800">{{this.autor}}</p>
+                    <p class="text-sm text-gray-600">{{this.cargo}}</p>
+                  </div>
+                  <span class="text-xs text-gray-500">{{formatDateShort this.fecha}}</span>
+                </div>
+                <p class="text-gray-700 mt-2">{{this.mensaje}}</p>
+                <div class="mt-2">
+                  <span class="inline-block px-2 py-1 text-xs rounded
+                    {{#if (eq this.tipo 'accion')}}bg-green-100 text-green-800{{/if}}
+                    {{#if (eq this.tipo 'comentario')}}bg-blue-100 text-blue-800{{/if}}
+                    {{#if (eq this.tipo 'solicitud_info')}}bg-yellow-100 text-yellow-800{{/if}}
+                  ">
+                    {{#if (eq this.tipo 'accion')}}Acción Tomada{{/if}}
+                    {{#if (eq this.tipo 'comentario')}}Comentario{{/if}}
+                    {{#if (eq this.tipo 'solicitud_info')}}Solicitud de Información{{/if}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        {{else}}
+        <div class="text-center py-8 text-gray-500">
+          <svg class="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+          </svg>
+          <p>Aún no hay respuestas para este reporte</p>
+        </div>
+        {{/if}}
+      </div>
+
+      <!-- Formulario para agregar respuesta -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Agregar Respuesta</h3>
+        <form action="/comunicacion/reporte/{{reporte.id}}/respuesta" method="POST" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="autor" class="block text-sm font-medium text-gray-700 mb-2">
+                Tu Nombre <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="autor"
+                name="autor"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Ej: Carlos Mendez"
+              >
+            </div>
+
+            <div>
+              <label for="cargo" class="block text-sm font-medium text-gray-700 mb-2">
+                Tu Cargo <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="cargo"
+                name="cargo"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Ej: Defensor Regional"
+              >
+            </div>
+          </div>
+
+          <div>
+            <label for="tipo" class="block text-sm font-medium text-gray-700 mb-2">
+              Tipo de Respuesta <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="tipo"
+              name="tipo"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="comentario">Comentario</option>
+              <option value="accion">Acción Tomada</option>
+              <option value="solicitud_info">Solicitud de Información</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="mensaje" class="block text-sm font-medium text-gray-700 mb-2">
+              Mensaje <span class="text-red-500">*</span>
+            </label>
+            <textarea
+              id="mensaje"
+              name="mensaje"
+              required
+              rows="4"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Escribe tu respuesta o comentario..."
+            ></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+              Enviar Respuesta
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Columna lateral -->
+    <div class="lg:col-span-1 space-y-6">
+      <!-- Información del reportante -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Reportante</h3>
+        <div class="space-y-3">
+          <div>
+            <p class="text-sm font-medium text-gray-500">Nombre</p>
+            <p class="text-gray-800">{{reporte.nombreReportante}}</p>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-500">Cargo/Rol</p>
+            <p class="text-gray-800">{{reporte.cargoRol}}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cambiar estado -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Gestionar Estado</h3>
+        <form action="/comunicacion/reporte/{{reporte.id}}/estado" method="POST" class="space-y-4">
+          <div>
+            <label for="estado" class="block text-sm font-medium text-gray-700 mb-2">
+              Cambiar Estado
+            </label>
+            <select
+              id="estado"
+              name="estado"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="nuevo" {{#if (eq reporte.estado 'nuevo')}}selected{{/if}}>Nuevo</option>
+              <option value="en_revision" {{#if (eq reporte.estado 'en_revision')}}selected{{/if}}>En Revisión</option>
+              <option value="en_atencion" {{#if (eq reporte.estado 'en_atencion')}}selected{{/if}}>En Atención</option>
+              <option value="resuelto" {{#if (eq reporte.estado 'resuelto')}}selected{{/if}}>Resuelto</option>
+            </select>
+          </div>
+          <button type="submit" class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition font-medium">
+            Actualizar Estado
+          </button>
+        </form>
+      </div>
+
+      <!-- Acciones rápidas -->
+      <div class="bg-blue-50 rounded-lg p-4">
+        <h4 class="font-semibold text-blue-900 mb-2">Acciones Rápidas</h4>
+        <div class="space-y-2 text-sm text-blue-800">
+          <p>• Responde con acciones concretas</p>
+          <p>• Actualiza el estado del reporte</p>
+          <p>• Solicita información adicional si es necesario</p>
+          <p>• Mantén informado al reportante</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

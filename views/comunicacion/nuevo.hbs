@@ -1,0 +1,236 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <!-- Header -->
+  <div class="mb-8">
+    <a href="/comunicacion" class="text-blue-600 hover:text-blue-700 flex items-center mb-4">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+      </svg>
+      Volver a reportes
+    </a>
+    <h1 class="text-4xl font-bold text-gray-800 mb-2">Nuevo Reporte Comunitario</h1>
+    <p class="text-gray-600">Reporta necesidades o situaciones de tu comunidad</p>
+  </div>
+
+  <!-- Formulario -->
+  <form action="/comunicacion/nuevo" method="POST" class="bg-white rounded-lg shadow-md p-8">
+    <!-- Información del reportante -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b">Información del Reportante</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="nombreReportante" class="block text-sm font-medium text-gray-700 mb-2">
+            Nombre Completo <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="nombreReportante"
+            name="nombreReportante"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Ej: María González"
+          >
+        </div>
+
+        <div>
+          <label for="cargoRol" class="block text-sm font-medium text-gray-700 mb-2">
+            Cargo o Rol <span class="text-red-500">*</span>
+          </label>
+          <select
+            id="cargoRol"
+            name="cargoRol"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Seleccione...</option>
+            <option value="Líder Comunitario">Líder Comunitario</option>
+            <option value="Lideresa Comunitaria">Lideresa Comunitaria</option>
+            <option value="Defensor Regional">Defensor Regional</option>
+            <option value="Defensora Regional">Defensora Regional</option>
+            <option value="Líder Indígena">Líder Indígena</option>
+            <option value="Docente">Docente</option>
+            <option value="Promotor de Salud">Promotor de Salud</option>
+            <option value="Representante JAC">Representante JAC</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b">Ubicación</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label for="region" class="block text-sm font-medium text-gray-700 mb-2">
+            Región <span class="text-red-500">*</span>
+          </label>
+          <select
+            id="region"
+            name="region"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Seleccione...</option>
+            {{#each regiones}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div>
+          <label for="departamento" class="block text-sm font-medium text-gray-700 mb-2">
+            Departamento <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="departamento"
+            name="departamento"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Ej: Bolívar"
+          >
+        </div>
+
+        <div>
+          <label for="municipio" class="block text-sm font-medium text-gray-700 mb-2">
+            Municipio <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="municipio"
+            name="municipio"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Ej: Cartagena"
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalles del reporte -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b">Detalles del Reporte</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label for="tipoNecesidad" class="block text-sm font-medium text-gray-700 mb-2">
+            Tipo de Necesidad <span class="text-red-500">*</span>
+          </label>
+          <select
+            id="tipoNecesidad"
+            name="tipoNecesidad"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Seleccione...</option>
+            <option value="Agua Potable">Agua Potable</option>
+            <option value="Alimentos">Alimentos</option>
+            <option value="Salud">Salud</option>
+            <option value="Vivienda">Vivienda</option>
+            <option value="Educación">Educación</option>
+            <option value="Apoyo Psicosocial">Apoyo Psicosocial</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="nivelUrgencia" class="block text-sm font-medium text-gray-700 mb-2">
+            Nivel de Urgencia <span class="text-red-500">*</span>
+          </label>
+          <select
+            id="nivelUrgencia"
+            name="nivelUrgencia"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Seleccione...</option>
+            <option value="critica">Crítica - Requiere atención inmediata</option>
+            <option value="alta">Alta - Urgente en próximos días</option>
+            <option value="media">Media - Importante pero no urgente</option>
+            <option value="baja">Baja - Puede esperar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-2">
+          Descripción Detallada de la Situación <span class="text-red-500">*</span>
+        </label>
+        <textarea
+          id="descripcion"
+          name="descripcion"
+          required
+          rows="6"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Describa con detalle la situación, las necesidades específicas y cualquier información relevante..."
+        ></textarea>
+        <p class="text-sm text-gray-500 mt-2">
+          Sea lo más específico posible. Incluya detalles como: cuánto tiempo lleva la situación, qué se ha intentado hacer, qué recursos se necesitan.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="personasAfectadas" class="block text-sm font-medium text-gray-700 mb-2">
+            Número Aproximado de Personas Afectadas
+          </label>
+          <input
+            type="number"
+            id="personasAfectadas"
+            name="personasAfectadas"
+            min="1"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Ej: 500"
+          >
+        </div>
+
+        <div>
+          <label for="archivoAdjunto" class="block text-sm font-medium text-gray-700 mb-2">
+            Archivo Adjunto (opcional)
+          </label>
+          <input
+            type="text"
+            id="archivoAdjunto"
+            name="archivoAdjunto"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Nombre del archivo (simulado)"
+          >
+          <p class="text-xs text-gray-500 mt-1">Fotos, documentos o evidencias (funcionalidad simulada)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información importante -->
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-blue-800">Información Importante</h3>
+          <div class="mt-2 text-sm text-blue-700">
+            <ul class="list-disc list-inside space-y-1">
+              <li>Su reporte será evaluado por el equipo de la Defensoría del Pueblo</li>
+              <li>Recibirá seguimiento y respuestas a través de este sistema</li>
+              <li>En caso de emergencia inmediata, llame también a líneas de emergencia locales</li>
+              <li>Toda la información proporcionada será tratada de forma confidencial</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end gap-4">
+      <a href="/comunicacion" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium">
+        Cancelar
+      </a>
+      <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+        Enviar Reporte
+      </button>
+    </div>
+  </form>
+</div>
