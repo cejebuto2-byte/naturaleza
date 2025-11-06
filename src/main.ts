@@ -92,6 +92,12 @@ async function bootstrap() {
         };
         return badges[nivel] || 'bg-gray-600 text-white';
       },
+
+      // Obtener el valor máximo de un objeto
+      max: (obj: Record<string, number>) => {
+        if (!obj || typeof obj !== 'object') return 0;
+        return Math.max(...Object.values(obj));
+      },
     }
   });
 

@@ -1,0 +1,313 @@
+<!-- Incluir Leaflet.js CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  #mapa {
+    height: 600px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .leaflet-popup-content {
+    margin: 16px;
+    min-width: 250px;
+  }
+
+  .leaflet-popup-content h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1f2937;
+  }
+
+  .marker-icon {
+    background: none;
+    border: none;
+  }
+</style>
+
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Mapa de Zonas Afectadas</h1>
+    <p class="text-gray-600">Georreferenciación de necesidades en tiempo real</p>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-semibold opacity-90">Total Zonas</h3>
+        <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+        </svg>
+      </div>
+      <p class="text-3xl font-bold">{{estadisticas.totalZonas}}</p>
+      <p class="text-xs opacity-80 mt-1">{{estadisticas.zonasActivas}} activas</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-red-500 to-red-600 text-white rounded-lg shadow-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-semibold opacity-90">Personas Afectadas</h3>
+        <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+      </div>
+      <p class="text-3xl font-bold">{{formatNumber estadisticas.totalAfectados}}</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-lg shadow-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-semibold opacity-90">Urgentes</h3>
+        <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+      </div>
+      <p class="text-3xl font-bold">{{estadisticas.porPrioridad.urgente}}</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-semibold opacity-90">Necesidad Principal</h3>
+        <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+        </svg>
+      </div>
+      <p class="text-2xl font-bold">
+        {{#if (eq estadisticas.necesidadesPorTipo.agua (max estadisticas.necesidadesPorTipo))}}Agua
+        {{else if (eq estadisticas.necesidadesPorTipo.alimentos (max estadisticas.necesidadesPorTipo))}}Alimentos
+        {{else if (eq estadisticas.necesidadesPorTipo.salud (max estadisticas.necesidadesPorTipo))}}Salud
+        {{else}}Vivienda{{/if}}
+      </p>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Filtros</h2>
+    <form method="GET" action="/mapa" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Filtro por tipo de necesidad -->
+      <div>
+        <label for="tipo" class="block text-sm font-medium text-gray-700 mb-2">Tipo de Necesidad</label>
+        <select name="tipo" id="tipo" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+          <option value="todos" {{#if (eq filtros.tipo 'todos')}}selected{{/if}}>Todas</option>
+          <option value="agua" {{#if (eq filtros.tipo 'agua')}}selected{{/if}}>Agua</option>
+          <option value="alimentos" {{#if (eq filtros.tipo 'alimentos')}}selected{{/if}}>Alimentos</option>
+          <option value="salud" {{#if (eq filtros.tipo 'salud')}}selected{{/if}}>Salud</option>
+          <option value="vivienda" {{#if (eq filtros.tipo 'vivienda')}}selected{{/if}}>Vivienda</option>
+          <option value="educacion" {{#if (eq filtros.tipo 'educacion')}}selected{{/if}}>Educación</option>
+          <option value="psicosocial" {{#if (eq filtros.tipo 'psicosocial')}}selected{{/if}}>Psicosocial</option>
+        </select>
+      </div>
+
+      <!-- Filtro por prioridad -->
+      <div>
+        <label for="prioridad" class="block text-sm font-medium text-gray-700 mb-2">Nivel de Prioridad</label>
+        <select name="prioridad" id="prioridad" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+          <option value="todas" {{#if (eq filtros.prioridad 'todas')}}selected{{/if}}>Todas</option>
+          <option value="urgente" {{#if (eq filtros.prioridad 'urgente')}}selected{{/if}}>Urgente</option>
+          <option value="alta" {{#if (eq filtros.prioridad 'alta')}}selected{{/if}}>Alta</option>
+          <option value="media" {{#if (eq filtros.prioridad 'media')}}selected{{/if}}>Media</option>
+          <option value="baja" {{#if (eq filtros.prioridad 'baja')}}selected{{/if}}>Baja</option>
+        </select>
+      </div>
+
+      <!-- Filtro por departamento -->
+      <div>
+        <label for="departamento" class="block text-sm font-medium text-gray-700 mb-2">Departamento</label>
+        <select name="departamento" id="departamento" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+          <option value="todos" {{#if (eq filtros.departamento 'todos')}}selected{{/if}}>Todos</option>
+          {{#each departamentos}}
+          <option value="{{this}}" {{#if (eq ../filtros.departamento this)}}selected{{/if}}>{{this}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="md:col-span-3 flex gap-4">
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+          Aplicar Filtros
+        </button>
+        <a href="/mapa" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg font-semibold transition-colors">
+          Limpiar
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Contenedor del mapa y lista -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Mapa -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Mapa Interactivo</h2>
+        <div id="mapa"></div>
+        <div class="mt-4 text-sm text-gray-600">
+          <p class="font-semibold mb-2">Leyenda:</p>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center">
+              <span class="w-4 h-4 rounded-full bg-red-500 mr-2"></span>
+              <span>Urgente</span>
+            </div>
+            <div class="flex items-center">
+              <span class="w-4 h-4 rounded-full bg-orange-500 mr-2"></span>
+              <span>Alta</span>
+            </div>
+            <div class="flex items-center">
+              <span class="w-4 h-4 rounded-full bg-yellow-500 mr-2"></span>
+              <span>Media</span>
+            </div>
+            <div class="flex items-center">
+              <span class="w-4 h-4 rounded-full bg-green-500 mr-2"></span>
+              <span>Baja</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de zonas -->
+    <div class="lg:col-span-1">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Zonas Afectadas ({{zonas.length}})</h2>
+        <div class="space-y-3 max-h-[600px] overflow-y-auto">
+          {{#each zonas}}
+          <div class="border-l-4 border-{{#if (eq nivelPrioridad 'urgente')}}red{{else if (eq nivelPrioridad 'alta')}}orange{{else if (eq nivelPrioridad 'media')}}yellow{{else}}green{{/if}}-500 p-3 bg-gray-50 rounded cursor-pointer hover:bg-gray-100 transition-colors" onclick="centrarEnZona({{coordenadas.lat}}, {{coordenadas.lng}}, {{id}})">
+            <h3 class="font-semibold text-gray-900 text-sm">{{nombre}}</h3>
+            <p class="text-xs text-gray-600">{{municipio}}, {{departamento}}</p>
+            <p class="text-xs text-gray-500 mt-1">{{tipoEmergencia}}</p>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xs px-2 py-1 rounded-full {{badgePrioridad nivelPrioridad}}">
+                {{nivelPrioridad}}
+              </span>
+              <span class="text-xs text-gray-600">{{formatNumber poblacionAfectada}} afectados</span>
+            </div>
+          </div>
+          {{/each}}
+
+          {{#unless zonas}}
+          <div class="text-center py-8 text-gray-500">
+            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p>No se encontraron zonas con estos filtros</p>
+          </div>
+          {{/unless}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Incluir Leaflet.js -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  // Datos de zonas
+  const zonasData = {{{json zonas}}};
+  const centroMapa = {{{json centroMapa}}};
+
+  // Inicializar mapa
+  const mapa = L.map('mapa').setView([centroMapa.lat, centroMapa.lng], centroMapa.zoom);
+
+  // Agregar capa de tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18,
+  }).addTo(mapa);
+
+  // Función para obtener color según prioridad
+  function getColorPrioridad(prioridad) {
+    const colores = {
+      'urgente': '#ef4444',
+      'alta': '#f97316',
+      'media': '#eab308',
+      'baja': '#22c55e'
+    };
+    return colores[prioridad] || '#6b7280';
+  }
+
+  // Función para obtener icono personalizado
+  function getIconoPrioridad(prioridad) {
+    const color = getColorPrioridad(prioridad);
+    return L.divIcon({
+      className: 'marker-icon',
+      html: `
+        <div style="
+          background-color: ${color};
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          border: 3px solid white;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        "></div>
+      `,
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+      popupAnchor: [0, -12]
+    });
+  }
+
+  // Objeto para almacenar referencias a los marcadores
+  const marcadores = {};
+
+  // Agregar marcadores
+  zonasData.forEach(zona => {
+    const marcador = L.marker([zona.coordenadas.lat, zona.coordenadas.lng], {
+      icon: getIconoPrioridad(zona.nivelPrioridad)
+    }).addTo(mapa);
+
+    // Crear contenido del popup
+    let necesidadesHTML = '<div style="margin-top: 8px;">';
+    zona.necesidades.forEach(nec => {
+      const colorNec = {
+        'agua': 'blue',
+        'alimentos': 'orange',
+        'salud': 'red',
+        'vivienda': 'purple',
+        'educacion': 'green',
+        'psicosocial': 'pink'
+      }[nec.tipo] || 'gray';
+
+      necesidadesHTML += `
+        <div style="display: flex; align-items: center; margin-bottom: 4px;">
+          <span style="background-color: ${colorNec}; width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px;"></span>
+          <span style="font-size: 12px;">${nec.tipo.charAt(0).toUpperCase() + nec.tipo.slice(1)}: ${nec.descripcion}</span>
+        </div>
+      `;
+    });
+    necesidadesHTML += '</div>';
+
+    const popupContent = `
+      <h3>${zona.nombre}</h3>
+      <p style="margin: 4px 0; font-size: 13px; color: #666;">${zona.municipio}, ${zona.departamento}</p>
+      <div style="margin: 8px 0;">
+        <span style="background-color: ${getColorPrioridad(zona.nivelPrioridad)}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">
+          ${zona.nivelPrioridad.toUpperCase()}
+        </span>
+      </div>
+      <p style="margin: 8px 0; font-size: 13px;"><strong>Emergencia:</strong> ${zona.tipoEmergencia}</p>
+      <p style="margin: 4px 0; font-size: 13px;"><strong>Afectados:</strong> ${zona.poblacionAfectada.toLocaleString('es-CO')} personas</p>
+      <p style="margin: 4px 0; font-size: 13px;"><strong>Fecha:</strong> ${new Date(zona.fechaReporte).toLocaleDateString('es-CO')}</p>
+      <p style="margin: 8px 0 4px 0; font-size: 13px; font-weight: 600;">Necesidades:</p>
+      ${necesidadesHTML}
+    `;
+
+    marcador.bindPopup(popupContent, { maxWidth: 300 });
+
+    // Guardar referencia al marcador
+    marcadores[zona.id] = marcador;
+  });
+
+  // Función para centrar en una zona específica
+  function centrarEnZona(lat, lng, id) {
+    mapa.setView([lat, lng], 12);
+    if (marcadores[id]) {
+      marcadores[id].openPopup();
+    }
+  }
+
+  // Ajustar vista para mostrar todos los marcadores si hay zonas
+  if (zonasData.length > 0) {
+    const bounds = L.latLngBounds(zonasData.map(z => [z.coordenadas.lat, z.coordenadas.lng]));
+    mapa.fitBounds(bounds, { padding: [50, 50] });
+  }
+</script>
