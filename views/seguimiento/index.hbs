@@ -84,13 +84,17 @@
     <!-- Gráfico de Evolución Temporal -->
     <div class="bg-white rounded-lg shadow-md p-6">
       <h2 class="text-xl font-bold text-gray-900 mb-4">Evolución Temporal</h2>
-      <canvas id="graficoEvolucion" height="250"></canvas>
+      <div class="relative h-72">
+        <canvas id="graficoEvolucion"></canvas>
+      </div>
     </div>
 
     <!-- Gráfico de Distribución de Recursos -->
     <div class="bg-white rounded-lg shadow-md p-6">
       <h2 class="text-xl font-bold text-gray-900 mb-4">Distribución de Recursos</h2>
-      <canvas id="graficoDistribucion" height="250"></canvas>
+      <div class="relative h-72">
+        <canvas id="graficoDistribucion"></canvas>
+      </div>
     </div>
   </div>
 
@@ -98,13 +102,17 @@
     <!-- Gráfico de Aportes por Mes -->
     <div class="bg-white rounded-lg shadow-md p-6">
       <h2 class="text-xl font-bold text-gray-900 mb-4">Aportes por Mes</h2>
-      <canvas id="graficoAportes" height="250"></canvas>
+      <div class="relative h-72">
+        <canvas id="graficoAportes"></canvas>
+      </div>
     </div>
 
     <!-- Gráfico de Zonas por Región -->
     <div class="bg-white rounded-lg shadow-md p-6">
       <h2 class="text-xl font-bold text-gray-900 mb-4">Intervenciones por Departamento</h2>
-      <canvas id="graficoRegiones" height="250"></canvas>
+      <div class="relative h-72">
+        <canvas id="graficoRegiones"></canvas>
+      </div>
     </div>
   </div>
 
@@ -165,6 +173,15 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: {
+            duration: 1200,
+            easing: 'easeOutQuart',
+          },
+          animations: {
+            tension: {
+              duration: 0,
+            },
+          },
           plugins: {
             legend: {
               display: true,
